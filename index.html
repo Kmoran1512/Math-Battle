@@ -10,6 +10,7 @@
         who have trouble learning math to learn in a fun and interactive way.">
 
         <link rel="stylesheet" href="enter-style.css">
+        <script src="./node_modules/jquery/dist/jquery.js"></script>
     </head>
 
     <body>
@@ -17,9 +18,12 @@
         <h1>Math Battle!!</h1>
 
         <div class="main">
-            <button type="button">Login</button>
-            <button type="button">Register</button>
-            <button type="button">Enter as Guest</button>
+            <button type="button" id="enter-page-login-btn" onclick="location.href = 'html/login.html'">Login</button>
+            <br/> <br/>
+            <button type="button" id="enter-page-register-btn" onclick="location.href = 'html/register.html'">Register</button>
+            <br/> <br/>
+            <button type="button" id="enter-page-guest-btn" onclick="location.href = 'html/guest.html'">Enter as Guest</button>
+            <br/> <br/>
         </div>
 
     </body>

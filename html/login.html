@@ -10,6 +10,7 @@
         who have trouble learning math to learn in a fun and interactive way.">
 
         <link rel="stylesheet" href="login-style.css">
+        <script src="./node_modules/jquery/dist/jquery.js"></script>
     </head>
 
     <body>
@@ -23,7 +24,12 @@
             <button type="submit" class="btn login" id="btn-login" name="login-button">Login</button>
         </div>
 
-        <p>If you do not already have an account </p> <button type="button">Register</button> <p> or continue as a </p> <button type="button">Guest</button>
+        <br/><br/>
+
+        <p>
+            If you do not already have an account <button type="button" onclick="location.href = 'register.html'">Register</button>
+            or continue as a <button type="button" onclick="location.href = 'guest.html'">Guest</button>
+        </p>
 
     </body>
 

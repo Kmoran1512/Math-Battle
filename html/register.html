@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Register</title>
+
+        <meta name="authors" content="Chris Cui, Kyle Moran & Rachel Woodall">
+        <meta name="description" content="A game designed to help teach children and audults
+        who have trouble learning math to learn in a fun and interactive way.">
+
+        <link rel="stylesheet" href="register-style.css">
+        <script src="./node_modules/jquery/dist/jquery.js"></script>
+    </head>
+
+    <body>
+
+        <h1>Register Below</h1>
+
+        <div class="div register-section">
+            <input type="text" placeholder="User name" name="username"/>
+            <input type="password" placeholder="password" name="password" />
+
+            <button type="submit" class="btn register" id="btn-register" name="register-button">Register</button>
+        </div>
+
+        <p>
+            If you already have an account <button type="button" onclick="location.href = 'login.html'">Login</button>
+            or continue as a <button type="button" onclick="location.href = 'guest.html'">Guest</button>
+        </p>
+    </body>
+
+</html>
