@@ -9,8 +9,8 @@
         <meta name="description" content="A game designed to help teach children and audults
         who have trouble learning math to learn in a fun and interactive way.">
 
-        <link rel="stylesheet" href="login-style.css">
-        <script src="./node_modules/jquery/dist/jquery.js"></script>
+        <link rel="stylesheet" href="../css/login-style.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
     </head>
 
     <body>
@@ -18,8 +18,8 @@
         <h1>Login Below</h1>
 
         <div class="div login-section">
-            <input type="text" placeholder="User name" name="username"/>
-            <input type="password" placeholder="password" name="password" />
+            <input type="text" placeholder="Email" name="email" id="txt-login-email"/>
+            <input type="password" placeholder="Password" name="password" id="txt-login-pass"/>
 
             <button type="submit" class="btn login" id="btn-login" name="login-button">Login</button>
         </div>
@@ -31,6 +31,18 @@
             or continue as a <button type="button" onclick="location.href = 'guest.html'">Guest</button>
         </p>
 
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+
+        <script src="../js/firebase-include.js"></script>
+        <script  type="module" src="../js/login.js"></script>
     </body>
+
+    
 
 </html>

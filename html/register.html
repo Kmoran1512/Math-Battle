@@ -18,7 +18,7 @@
         <h1>Register Below</h1>
 
         <div class="div register-section">
-            <input type="text" placeholder="User name" name="username"/>
+            <input type="text" placeholder="Email" name="email"/>
             <input type="password" placeholder="password" name="password" />
 
             <button type="submit" class="btn register" id="btn-register" name="register-button">Register</button>
@@ -28,6 +28,16 @@
             If you already have an account <button type="button" onclick="location.href = 'login.html'">Login</button>
             or continue as a <button type="button" onclick="location.href = 'guest.html'">Guest</button>
         </p>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+
+        <script src="../js/firebase-include.js"></script>
+        <script  type="module" src="../js/register.js"></script>
     </body>
 
 </html>
