@@ -1,5 +1,21 @@
 
+//Guest in Button Logic
+{
+    var guestin = (event) => {
+        console.log('hi')
+        firebase.auth().signInAnonymously()
+    };
 
+    $(document).on('click', '#regi-btn-guest', guestin)
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location = '../html/home.html';
+        } else {
+            console.log("not in")
+        }
+    });
+}
 
 //Submit Register Button Logic
 {
