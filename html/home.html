@@ -3,28 +3,21 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Math Battle</title>
+        <title>Login</title>
 
         <meta name="authors" content="Chris Cui, Kyle Moran & Rachel Woodall">
         <meta name="description" content="A game designed to help teach children and audults
         who have trouble learning math to learn in a fun and interactive way.">
 
-        <link rel="stylesheet" href="./css/enter-style.css">
-        <script src="./node_modules/jquery/dist/jquery.js"></script>
-    </head>
+        <link rel="stylesheet" href="../css/home-style.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
 
     <body>
 
-        <h1>Math Battle!!</h1>
+        <h1>Logged In</h1>
 
-        <div class="main">
-            <button type="button" id="enter-page-login-btn" onclick="location.href = 'html/login.html'">Login</button>
-            <br/> <br/>
-            <button type="button" id="enter-page-register-btn" onclick="location.href = 'html/register.html'">Register</button>
-            <br/> <br/>
-            <button type="button" id="enter-page-guest-btn" onclick="location.href = 'html/guest.html'">Enter as Guest</button>
-            <br/> <br/>
-        </div>
+        <p class="p-username"> <button type="button" id="log-out">Log Out</button></p>
+        
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
@@ -34,10 +27,10 @@
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
 
-        <script src="./atom.js"></script>
-        <script type="module" src="./js/firebase-include.js"></script>
-        <script src="./js/index.js"></script>
-
+        <script src="../atom.js"></script>
+        <script src="../js/firebase-include.js"></script>
+        <script src="../js/home.js"></script>
     </body>
 
+    
 </html>
