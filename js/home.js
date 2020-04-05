@@ -1,20 +1,20 @@
+// Update page when log in loads
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         curr_user = user;
         loaded(curr_user)
     } else {
-      // No user is signed in.
+        window.location = '../index.html';
     }
 });
 
+// Display logged in username
 var loaded = (user) => {
-    console.log('hi')
 
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified;
 
     if (user != null) {
-        console.log(user)
 
         if (user.isAnonymous) {
             var inn = 'guest : ' + $('.p-username')[0].innerHTML
@@ -29,10 +29,7 @@ var loaded = (user) => {
             var inn = 'Unknown User : ' + $('.p-username')[0].innerHTML
             $('.p-username')[0].innerHTML = inn
         }
-
         
-    } else {
-        console.log(user)
     }
 } 
 

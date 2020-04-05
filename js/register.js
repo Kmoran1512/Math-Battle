@@ -1,20 +1,23 @@
+
+
+
 //Submit Register Button Logic
 {
-    var login = (event) => {
-        var userEmail = $('#txt-login-email')[0].value;
-        var userPass = $('#txt-login-pass')[0].value;
+    var register = (event) => {
+        var userEmail = $('#txt-register-email')[0].value;
+        var userPass = $('#txt-register-pass')[0].value;
 
-        firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+        firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
 
-            window.alert("Error: " + errorMessage);
+            window.alert("Error: " + errorMessage)
         });
 
     };
 
-    $(document).on('click', '#btn-login', login)
+    $(document).on('click', '#btn-register', register)
 
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
