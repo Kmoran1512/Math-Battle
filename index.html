@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
-    <head>
+    <head id="page-head">
         <meta charset="utf-8">
         <title>Math Battle</title>
 
-        <meta name="authors" content="Chris Cui, Kyle Moran & Rachel Woodall">
-        <meta name="description" content="A game designed to help teach children and audults
-        who have trouble learning math to learn in a fun and interactive way.">
-
-        <link rel="stylesheet" href="./css/enter-style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     </head>
 
-    <body>
-
-        <h1>Math Battle!!</h1>
+    <body id="page-tail">
 
         <div class="main">
-            <button type="button" onclick="location.href = 'html/login.html'" id="idx-btn-login">Login</button>
+
+            <h1>Math Battle!!</h1>
+
+            <br/><br/>
+
+            <button type="button" onclick="location.href = 'html/login.html'" id="idx-btn-login" class="btn btn-primary">Login</button>
             <br/> <br/>
-            <button type="button" onclick="location.href = 'html/register.html'" id="idx-btn-register">Register</button>
+            <button type="button" onclick="location.href = 'html/register.html'" id="idx-btn-register" class="btn btn-warning">Register</button>
             <br/> <br/>
-            <button type="button" id="idx-btn-guest">Enter as Guest</button>
+            <button type="button" id="idx-btn-guest" class="btn btn-success">Enter as Guest</button>
             <br/> <br/>
         </div>
 
@@ -34,10 +32,10 @@
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
 
-        <script src="./atom.js"></script>
-        <script type="module" src="./js/firebase-include.js"></script>
+        <script src="./js/includes/index-defaults.js"></script> <!---->
         <script type="module" src="index.js"></script>
 
     </body>
+
 
 </html>
