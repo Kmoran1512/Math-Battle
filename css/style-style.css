@@ -4,4 +4,25 @@
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
+    width: 400px;
+}
+
+.sub {
+    margin-top: 45%;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+
+.info {
+    padding-left: 50px;
+    padding-top: 5px;
+}
+
+.about-card {
+    padding: 5px;
+    border-width: 2px;
+    border-color: lightgray;
+    border-style: solid;
 }

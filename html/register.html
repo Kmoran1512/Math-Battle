@@ -9,19 +9,35 @@
 
     <body id="page-tail">
 
-        <h1>Register Below</h1>
+        <div class="main register-section">
 
-        <div class="div register-section">
-            <input type="text" placeholder="Email" name="email" id="txt-register-email"/>
-            <input type="password" placeholder="password" name="password" id="txt-register-pass"/>
+            <h1>Register Below</h1>
 
-            <button type="submit" class="btn register" id="btn-register" name="register-button">Register</button>
+            <br/> <br/>
+
+            <div class="form-group">
+                <label for="txt-register-email">Email address</label>
+                <input type="email" class="form-control" id="txt-register-email" aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+                <label for="txt-register-pass">Password</label>
+                <input type="password" class="form-control" id="txt-register-pass" placeholder="Password">
+            </div>
+
+            <button type="submit" class="btn btn-warning" id="btn-register" name="register-button">Register</button>
+
         </div>
 
-        <p>
-            If you already have an account <button type="button" onclick="location.href = 'login.html'">Login</button>
-            or continue as a <button type="button" id="regi-btn-guest">Guest</button>
-        </p>
+        <div class="sub">
+
+            <p>
+                If you already have an account <button type="button" class="btn btn-primary" onclick="location.href = 'login.html'">Login</button>
+                or continue as a <button type="button" class="btn btn-success" id="regi-btn-guest">Guest</button>
+            </p>
+
+        </div>
+
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
