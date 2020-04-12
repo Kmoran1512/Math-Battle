@@ -8,21 +8,35 @@
 
     <body id='page-tail'>
 
-        <h1>Login Below</h1>
+        <div class="main login-section">
+            <h1>Login Below</h1>
 
-        <div class="div login-section">
-            <input type="text" placeholder="Email" name="email" id="txt-login-email"/>
-            <input type="password" placeholder="Password" name="password" id="txt-login-pass"/>
+            <br/><br/>
 
-            <button type="submit" class="btn login" id="btn-login" name="login-button">Login</button>
+            <div class="form-group">
+                <label for="txt-login-email">Email address</label>
+                <input type="email" class="form-control" id="txt-login-email" aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+                <label for="txt-login-pass">Password</label>
+                <input type="password" class="form-control" id="txt-login-pass" placeholder="Password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-login" name="login-button">Login</button>
         </div>
 
-        <br/><br/>
+        
 
-        <p>
-            If you do not already have an account <button type="button" onclick="location.href = 'register.html'">Register</button>
-            or continue as a <button type="button" id="login-btn-guest">Guest</button>
-        </p>
+
+        <div class="sub">
+
+            <p>
+                If you do not already have an account <button type="button" class="btn btn-warning" onclick="location.href = 'register.html'">Register</button>
+                or continue as a <button type="button" class="btn btn-success" id="login-btn-guest">Guest</button>
+            </p>
+
+        </div>
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
