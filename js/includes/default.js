@@ -1,3 +1,5 @@
+$('#page-head')[0].style.backgroundColor = "grey";
+
 $('#page-head').append(`
     <meta charset="utf-8">
 
@@ -11,11 +13,11 @@ $('#page-head').append(`
 `);
 
 $('#head-nav-bar').append(`
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" role="navigation" aria-label="main navigation">
         <div class="container-fluid">
 
-            <div class="navbar-header">
-                <a class="navbar-brand" href="about.html">Math Battle</a>
+            <div class="navbar-header" aria-label="link to about us">
+                <a class="navbar-brand" href="about.html" style="color: white">Math Battle</a>
             </div>
 
             <ul class="nav navbar-nav">
@@ -25,7 +27,7 @@ $('#head-nav-bar').append(`
                 <li><a href="math_page.html">Math!</a></li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" role="navigation" aria-label="account navigation">
                 <li><a href="account.html" class="p-username"><span class="glyphicon glyphicon-user"></span></a></li>
                 <li><a href='.' id="log-out">  Logout  <span class="glyphicon glyphicon-log-in"></span></a></li>
             </ul>

@@ -1,3 +1,7 @@
+/* body {
+    background: grey;
+} */
+
 .main {
     top: 35%;
     left: 50%;
@@ -5,6 +9,11 @@
     transform: translate(-50%, -50%);
     text-align: center;
     width: 400px;
+}
+
+.btn {
+    font-size: 24pt;
+    color: rgb(58, 6, 6);
 }
 
 .sub {
@@ -25,4 +34,23 @@
     border-width: 2px;
     border-color: lightgray;
     border-style: solid;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: lightsalmon; /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
+        a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: white; /*BACKGROUND color for active*/
+    background-color: #030033;
+}
+
+.navbar-default {
+    background-color: darkslategray;
+    border-color: darkslategray;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white; /*Change active text color here*/
 }
