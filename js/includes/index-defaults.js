@@ -1,3 +1,5 @@
+$('#page-head')[0].style.backgroundColor = "grey";
+
 $('#page-head').append(`
 
     <meta name="authors" content="Chris Cui, Kyle Moran & Rachel Woodall">

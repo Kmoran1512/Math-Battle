@@ -49,3 +49,8 @@ var loaded = (user) => {
 
     $(document).on('click', '#log-out', logout)
 }
+
+//Account Page
+{
+    
+}
