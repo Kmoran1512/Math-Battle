@@ -32,7 +32,7 @@
         "name": "Lantern Sprite",
         "atk": 6,
         "health": 5,
-        "img": "path/Lantern Card.png",
+        "img": "path/Lantern_Card.png",
         "lvl": 3
     }, {
         "id": 6,
