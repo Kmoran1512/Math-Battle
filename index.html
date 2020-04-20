@@ -10,17 +10,17 @@
 
     <body id="page-tail" style="background: url('./static/images/bg/home_page.jpg') no-repeat center center black fixed; width: 100%; height: 100vh">
 
-        <div class="main" role="main" aria-label="login options" style="background: whitesmoke; opacity: 80%; width: 350px;">
+        <div class="main" role="main" aria-label="login options" style="background: whitesmoke; opacity: 80%; width: 350px;" tabindex="1">
 
-            <h1>Math Battle!!</h1>
+            <h1 tabindex="2">Math Battle!!</h1>
 
             <br/><br/>
 
-            <button type="button" onclick="location.href = 'html/login.html'" id="idx-btn-login" class="btn btn-primary">Login</button>
+            <button type="button" onclick="location.href = 'html/login.html'" id="idx-btn-login" class="btn btn-primary" aria-label="Login" tabindex="3">Login</button>
             <br/> <br/>
-            <button type="button" onclick="location.href = 'html/register.html'" id="idx-btn-register" class="btn btn-warning">Register</button>
+            <button type="button" onclick="location.href = 'html/register.html'" id="idx-btn-register" class="btn btn-warning" aria-label="Register" tabindex="4">Register</button>
             <br/> <br/>
-            <button type="button" id="idx-btn-guest" class="btn btn-success">Enter as Guest</button>
+            <button type="button" id="idx-btn-guest" class="btn btn-success" aria-label="Enter as Guest" tabindex="5">Enter as Guest</button>
             <br/> <br/>
             
         </div>

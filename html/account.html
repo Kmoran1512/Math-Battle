@@ -2,7 +2,7 @@
 <html lang="en-US">
 
     <head id="page-head">
-        <title>Login</title>
+        <title>Account Settings</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     </head>
@@ -13,23 +13,22 @@
 
         <div class="info" role="main">
 
-            <h1> Account </h1>
+            <h1 tabindex="8"> Account </h1>
 
             <div id="guest-or-user">
 
                 <div aria-label="guest creation link">
 
-                    <p> Since you are a guest, you cannot save account settings. However, if you click on the below button you can make an account, 
-                        and save all of your settings and scores </p>
+                    <p tabindex="9"> Account settings are coming soon </p>
     
-                    <button type="button" onclick="location.href = 'guest_register.html'"> Create account </button>
+                    <button type="button" onclick="location.href = 'guest_register.html'" hidden tabindex="10"> Create account </button>
     
                 </div>
 
             </div>
     
-            <h4>Or view their High Score:</h4>
-            <p>High Score : <span class="act-spn-highscore">0</span></p>
+            <h4 tabindex="11">High Score:</h4>
+            <p tabindex="12">High Score : <span class="act-spn-highscore">0</span></p>
 
         </div>
         

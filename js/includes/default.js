@@ -16,20 +16,20 @@ $('#head-nav-bar').append(`
     <nav class="navbar navbar-default" role="navigation" aria-label="main navigation">
         <div class="container-fluid">
 
-            <div class="navbar-header" aria-label="link to about us">
-                <a class="navbar-brand" href="about.html" style="color: white">Math Battle</a>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="about.html" style="color: white" aria-label="link to about us" tabindex="1">Math Battle</a>
             </div>
 
             <ul class="nav navbar-nav">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="compendium.html">Compendium</a></li>
-                <li><a href="explain.html">How to Play</a></li>
-                <li><a href="math_page.html">Math!</a></li>
+                <li><a href="home.html" tabindex="2">Home</a></li>
+                <li><a href="compendium.html" tabindex="3">Compendium</a></li>
+                <li><a href="explain.html" tabindex="4">How to Play</a></li>
+                <li><a href="math_page.html" tabindex="5">Math!</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right" role="navigation" aria-label="account navigation">
-                <li><a href="account.html" class="p-username"><span class="glyphicon glyphicon-user"></span></a></li>
-                <li><a href='.' id="log-out">  Logout  <span class="glyphicon glyphicon-log-in"></span></a></li>
+                <li><a href="account.html" class="p-username" aria-label="account settings" tabindex="6"><span class="glyphicon glyphicon-user"></span></a></li>
+                <li><a href='.' id="log-out">  Logout  <span class="glyphicon glyphicon-log-in" tabindex="7"></span></a></li>
             </ul>
 
         </div>
