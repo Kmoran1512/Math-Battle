@@ -8,25 +8,45 @@
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
-    width: 400px;
+    width: 350px;
+    background: whitesmoke;
+    opacity: 80%;
 }
 
 .btn {
     font-size: 24pt;
     color: rgb(58, 6, 6);
+    opacity: 100%;
 }
 
 .sub {
-    margin-top: 45%;
+    margin-top: 29.5%;
     margin-left: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
     text-align: center;
+    background: whitesmoke;
+    opacity: 90%;
+    font-size: larger;
 }
 
 .info {
     padding-left: 50px;
     padding-top: 5px;
+}
+
+.back-ground {
+    background: url('../static/images/bg/Sandbox.png');
+    background-size: 100% 100%;
+    height: 85vh;
+}
+
+.middle {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 .about-card {
