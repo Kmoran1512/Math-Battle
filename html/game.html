@@ -3,9 +3,11 @@
 
     <head id="page-head">
         <meta charset="utf-8">
-        <title>Home</title>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Math Battle</title>
+        <link rel="stylesheet" type="text/css" href="../css/mystyle.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script languages="JavaScript" src="../js/game/gameEngine.js" type="module"></script>
     </head>
 
     <body id="page-tail">
@@ -15,9 +17,7 @@
         <div class="back-ground">
 
             <div class="info">
-                <div class="middle">
-                    <button onclick="location.href = './game.html'" class="btn btn-dark"><h1>PLAY THE GAME!!</h1></button>
-                </div>
+                <div id="root"></div>
             </div>
 
         </div>

@@ -4,296 +4,338 @@
         "name": "Will-O-the-Wisp",
         "atk": 2,
         "health": 1,
-        "img": "path/will_of_wisp_card.png",
-        "lvl": 1
+        "img": "../static/images/cards/fire/will_of_wisp_card.png",
+        "lvl": 1,
+        "type": "Fire"
     }, {
         "id": 2,
         "name": "Imp",
         "atk": 3,
         "health": 2,
-        "img": "path/Imp_card.png",
-        "lvl": 1
+        "img": "../static/images/cards/fire/Imp_card.png",
+        "lvl": 1,
+        "type": "Fire"
     }, {
         "id": 3,
         "name": "Rainbow Crow",
         "atk": 4,
         "health": 3,
-        "img": "path/Crow Card.png",
-        "lvl": 2
+        "img": "../static/images/cards/fire/Crow_Card.png",
+        "lvl": 2,
+        "type": "Fire"
     }, {
         "id": 4,
         "name": "Ember Mouse",
         "atk": 5,
         "health": 4,
-        "img": "path/Ember_mouse_card.png",
-        "lvl": 2
+        "img": "../static/images/cards/fire/Ember_mouse_card.png",
+        "lvl": 2,
+        "type": "Fire"
     }, {
         "id": 5,
         "name": "Lantern Sprite",
         "atk": 6,
         "health": 5,
-        "img": "path/Lantern_Card.png",
-        "lvl": 3
+        "img": "../static/images/cards/fire/Lantern_Card.png",
+        "lvl": 3,
+        "type": "Fire"
     }, {
         "id": 6,
         "name": "Salamander",
         "atk": 7,
         "health": 6,
-        "img": "path/Salamander_card.png",
-        "lvl": 3
+        "img": "../static/images/cards/fire/Salamander_card.png",
+        "lvl": 3,
+        "type": "Fire"
     }, {
         "id": 7,
         "name": "Jackalope",
         "atk": 8,
         "health": 7,
-        "img": "path/Jackotope_card.png",
-        "lvl": 4
+        "img": "../static/images/cards/fire/Jackotope_card.png",
+        "lvl": 4,
+        "type": "Fire"
     }, {
         "id": 8,
         "name": "Flaming Chicken",
         "atk": 10,
         "health": 8,
-        "img": "path/Flaming Chicken.png",
-        "lvl": 4
+        "img": "../static/images/cards/fire/Flaming_Chicken.png",
+        "lvl": 4,
+        "type": "Fire"
     }, {
         "id": 9,
         "name": "Hellhound",
         "atk": 12,
         "health": 9,
-        "img": "path/Hellhound_card.png",
-        "lvl": 5
+        "img": "../static/images/cards/fire/Hellhound_card.png",
+        "lvl": 5,
+        "type": "Fire"
     }, {
         "id": 10,
         "name": "Flame Wheel",
         "atk": 14,
         "health": 10,
-        "img": "path/Burning Wheel Card.png",
-        "lvl": 5
+        "img": "../static/images/cards/fire/Burning_Wheel_Card.png",
+        "lvl": 5,
+        "type": "Fire"
     }, {
         "id": 11,
         "name": "Flaming Bull",
         "atk": 16,
         "health": 11,
-        "img": "path/Bull Card.png",
-        "lvl": 6
+        "img": "../static/images/cards/fire/Bull_Card.png",
+        "lvl": 6,
+        "type": "Fire"
     }, {
         "id": 12,
         "name": "Phoenix",
         "atk": 18,
         "health": 12,
-        "img": "path/phoenix_card.png",
-        "lvl": 6
+        "img": "../static/images/cards/fire/phoenix_card.png",
+        "lvl": 6,
+        "type": "Fire"
     }, {
         "id": 13,
         "name": "Flame Rider",
         "atk": 20,
         "health": 13,
-        "img": "path/Rider.png",
-        "lvl": 7
+        "img": "../static/images/cards/fire/Rider.png",
+        "lvl": 7,
+        "type": "Fire"
     }, {
         "id": 14,
         "name": "Dragon",
         "atk": 22,
         "health": 14,
-        "img": "path/Dragon card.png",
-        "lvl": 7
+        "img": "../static/images/cards/fire/Dragon_card.png",
+        "lvl": 7,
+        "type": "Fire"
     }],
     "Grass": [{
         "id": 1,
         "name": "Tree Spirit",
         "atk": 2,
         "health": 2,
-        "img": "path/Tree_spirit.png",
-        "lvl": 1
+        "img": "../static/images/cards/grass/Tree_spirit.png",
+        "lvl": 1,
+        "type": "Grass"
     }, {
         "id": 2,
         "name": "Pixie",
         "atk": 3,
         "health": 3,
-        "img": "path/Pixie_card.png",
-        "lvl": 1
+        "img": "../static/images/cards/grass/Pixie_card.png",
+        "lvl": 1,
+        "type": "Grass"
     }, {
         "id": 3,
         "name": "Stag",
         "atk": 4,
         "health": 4,
-        "img": "path/Stag_card.png",
-        "lvl": 2
+        "img": "../static/images/cards/grass/Stag_card.png",
+        "lvl": 2,
+        "type": "Grass"
     }, {
         "id": 4,
         "name": "Raccoon Dog",
         "atk": 5,
         "health": 5,
-        "img": "path/Raccon_dog_card.png",
-        "lvl": 2
+        "img": "../static/images/cards/grass/Raccon_dog_card.png",
+        "lvl": 2,
+        "type": "Grass"
     }, {
         "id": 5,
         "name": "Gnome",
         "atk": 6,
         "health": 6,
-        "img": "path/Gnome_card.png",
-        "lvl": 3
+        "img": "../static/images/cards/grass/Gnome_card.png",
+        "lvl": 3,
+        "type": "Grass"
     }, {
         "id": 6,
         "name": "Skull Tree",
         "atk": 7,
         "health": 7,
-        "img": "path/Skull_Tree_card.png",
-        "lvl": 3
+        "img": "../static/images/cards/grass/Skull_Tree_card.png",
+        "lvl": 3,
+        "type": "Grass"
     }, {
         "id": 7,
         "name": "Loin",
         "atk": 8,
         "health": 8,
-        "img": "path/Loin.png",
-        "lvl": 4
+        "img": "../static/images/cards/grass/Loin.png",
+        "lvl": 4,
+        "type": "Grass"
     }, {
         "id": 8,
         "name": "Banshee",
         "atk": 9,
         "health": 9,
-        "img": "path/Banshee.png",
-        "lvl": 4
+        "img": "../static/images/cards/grass/Banshee.png",
+        "lvl": 4,
+        "type": "Grass"
     }, {
         "id": 9,
         "name": "Owlman",
         "atk": 10,
         "health": 10,
-        "img": "path/Owlman.png",
-        "lvl": 5
+        "img": "../static/images/cards/grass/Owlman.png",
+        "lvl": 5,
+        "type": "Grass"
     }, {
         "id": 10,
         "name": "Wendigo",
         "atk": 11,
         "health": 11,
-        "img": "path/Windigo.png",
-        "lvl": 5
+        "img": "../static/images/cards/grass/Windigo.png",
+        "lvl": 5,
+        "type": "Grass"
     }, {
         "id": 11,
         "name": "Goat Man",
         "atk": 12,
         "health": 12,
-        "img": "path/Goat_man_card.png",
-        "lvl": 6
+        "img": "../static/images/cards/grass/Goat_man_card.png",
+        "lvl": 6,
+        "type": "Grass"
     }, {
         "id": 12,
         "name": "Tree Person",
         "atk": 13,
         "health": 13,
-        "img": "path/Tree person_card.png",
-        "lvl": 6
+        "img": "../static/images/cards/grass/Tree_person_card.png",
+        "lvl": 6,
+        "type": "Grass"
     }, {
         "id": 13,
         "name": "Horse Man",
         "atk": 14,
         "health": 14,
-        "img": "path/Horse_man_card.png",
-        "lvl": 7
+        "img": "../static/images/cards/grass/Horse_man_card.png",
+        "lvl": 7,
+        "type": "Grass"
     }, {
         "id": 14,
-        "name": "Unicorn",
+        "name": "9-Tailed Fox",
         "atk": 15,
         "health": 15,
-        "img": "path/Unicorn.png",
-        "lvl": 7
+        "img": "../static/images/cards/grass/Nine_Tail_Fox_Card.png",
+        "lvl": 7,
+        "type": "Grass"
     }],
     "Water": [{
         "id": 1,
         "name": "Water Sprite",
         "atk": 1,
         "health": 2,
-        "img": "path/Water_sprite_card.png",
-        "lvl": 1
+        "img": "../static/images/cards/water/Water_sprite_card.png",
+        "lvl": 1,
+        "type": "Water"
     }, {
         "id": 2,
         "name": "Squid Person",
         "atk": 2,
         "health": 3,
-        "img": "path/squid person.png",
-        "lvl": 1
+        "img": "../static/images/cards/water/squid_person.png",
+        "lvl": 1,
+        "type": "Water"
     }, {
         "id": 3,
         "name": "Water Dog",
         "atk": 3,
         "health": 4,
-        "img": "path/Water_dog_card.png",
-        "lvl": 2
+        "img": "../static/images/cards/water/Water_dog_card.png",
+        "lvl": 2,
+        "type": "Water"
     }, {
         "id": 4,
         "name": "Flying Frod",
         "atk": 4,
         "health": 5,
-        "img": "path/Flying Frog.png",
-        "lvl": 2
+        "img": "../static/images/cards/water/Flying_Frog.png",
+        "lvl": 2,
+        "type": "Water"
     }, {
         "id": 5,
         "name": "Kelp Horse",
         "atk": 5,
         "health": 6,
-        "img": "path/Kelp horse.png",
-        "lvl": 3
+        "img": "../static/images/cards/water/Kelp_horse.png",
+        "lvl": 3,
+        "type": "Water"
     }, {
         "id": 6,
         "name": "Swamp Creature",
         "atk": 6,
         "health": 7,
-        "img": "path/Swamp_Creature_card.png",
-        "lvl": 3
+        "img": "../static/images/cards/water/Swamp_Creature_card.png",
+        "lvl": 3,
+        "type": "Water"
     }, {
         "id": 7,
         "name": "Turtle Person",
         "atk": 7,
         "health": 9,
-        "img": "path/Turtle_person.png",
-        "lvl": 4
+        "img": "../static/images/cards/water/Turtle_person.png",
+        "lvl": 4,
+        "type": "Water"
     }, {
         "id": 8,
         "name": "River Dolphin",
         "atk": 8,
         "health": 11,
-        "img": "path/River Dolphin.png",
-        "lvl": 4
+        "img": "../static/images/cards/water/River_Dolphin.png",
+        "lvl": 4,
+        "type": "Water"
     }, {
         "id": 9,
         "name": "King Otter",
         "atk": 9,
         "health": 13,
-        "img": "path/Otter_king_card.png",
-        "lvl": 5
+        "img": "../static/images/cards/water/Otter_king_card.png",
+        "lvl": 5,
+        "type": "Water"
     }, {
         "id": 10,
         "name": "Goat Fish",
         "atk": 10,
         "health": 15,
-        "img": "path/goat fish.png",
-        "lvl": 5
+        "img": "../static/images/cards/water/goat_fish.png",
+        "lvl": 5,
+        "type": "Water"
     }, {
         "id": 11,
         "name": "Mermaid",
         "atk": 11,
         "health": 17,
-        "img": "path/mermaid.png",
-        "lvl": 6
+        "img": "../static/images/cards/water/mermaid.png",
+        "lvl": 6,
+        "type": "Water"
     }, {
         "id": 12,
         "name": "Water Snake",
         "atk": 12,
         "health": 19,
-        "img": "path/Water_snake_Card.png",
-        "lvl": 6
+        "img": "../static/images/cards/water/Water_snake_Card.png",
+        "lvl": 6,
+        "type": "Water"
     }, {
         "id": 13,
         "name": "Octopus",
         "atk": 13,
         "health": 21,
-        "img": "path/Oct.png",
-        "lvl": 7
+        "img": "../static/images/cards/water/Oct.png",
+        "lvl": 7,
+        "type": "Water"
     }, {
         "id": 14,
         "name": "Hydra",
         "atk": 14,
         "health": 23,
-        "img": "path/Hydra_card.png",
-        "lvl": 7
+        "img": "../static/images/cards/water/Hydra_card.png",
+        "lvl": 7,
+        "type": "Water"
     }]
 }
