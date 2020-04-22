@@ -28,6 +28,33 @@ export default class Game {
         return available;
     }
 
+    setOpponent() {
+        var limit = 1;
+
+        if (this.round >= 8) {
+
+            limit = this.round - 7;
+
+            if (limit > 7) {
+                limit = 14;
+            }
+
+        }
+
+        var available = this.returnAvailableMinions();
+        var on_board = [];
+
+        for (let i = 0; i < availabe.length; i++) {
+            
+            if (available[i].lvl >= limit) {
+                on_board.push(available[i]);
+            }
+            
+        }
+
+        return on_board;
+    }
+
     setBuyboard(size = 7) {
         for (let i = 0; i < size; i++) {
             this.buyboard = this.generateRandomBoard(size);
