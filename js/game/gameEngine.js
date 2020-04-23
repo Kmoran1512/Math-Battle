@@ -1,5 +1,5 @@
 export default class Game {
-    constructor(data, health = 40, round = 10, level = 10, phase="Recruit") {
+    constructor(data, health = 40, round = 1, level = 1, phase="Recruit") {
         this.types = ['Fire', 'Water', 'Grass'];
         this.data = data;
         this.health = health;
@@ -23,6 +23,7 @@ export default class Game {
     }
 
     generateRandomBoard(size = 7) {
+        console.log(size)
         var pool = this.returnAvailableMinions()
         var board_Row = []
         for (let i = 0; i < size; i++) {
@@ -46,7 +47,9 @@ export const resestDomBoard = (game) => {
         $('#coins').append(coin);
     }
 
-    var build_a_board = game.generateRandomBoard(Math.min[game.level + 3, 7])
+    var build_a_board = game.generateRandomBoard(Math.min(game.level + 2, 7))
+
+
 
     for (let i = 0; i < build_a_board.length; i++) {
         console.log('hi')
