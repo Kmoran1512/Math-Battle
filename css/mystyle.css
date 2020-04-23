@@ -1,0 +1,99 @@
+.minion, .buyable {
+    width: 14%;
+    height: 40%;
+}
+
+table {
+   position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90%;
+    width: 100%;
+}
+td a:hover {
+    background: blue;
+}
+
+.submitB {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+}
+
+.no-minion {
+    height: 200px;
+    width: 150px;
+    border: gray 5px solid;
+}
+
+.health-bar {
+    height: 100%; 
+    width: 2.5%; 
+    background-color: green; 
+    float: left; 
+    text-align: center;
+}
+
+#coins {
+    position: absolute; 
+    bottom: 3%; 
+    left: 88%; 
+    height: 92%; 
+    width: 6%; 
+    border: black solid 5px;
+}
+
+#hpBar {
+    color: #4CAF59;
+    bottom: 2%; 
+    position: absolute; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 40%; 
+    outline: black solid 5px; 
+    text-align: left; 
+    font-size: xx-large; 
+    height:  6%;
+}
+
+.in-top-info {
+    font-size: xx-large; 
+    bottom: 20%; 
+    position: absolute; 
+    color: white; 
+    background-color: black;
+    opacity: 60%; 
+    height: 40%;
+}
+
+#Phase {
+    left: 29%;
+    height: auto;
+    bottom: 0%;
+    width: 27%;
+}
+
+#Round {
+    left: 15%; 
+}
+
+#Level {
+   left: 60%;
+}
+
+.blankHp {
+    background-color: none;
+    color: black;
+}
+
+.submitB {
+    left: 0;
+    height: 10%;
+    width: 100%;
+}
+
+.image {
+    position: relative;
+}
