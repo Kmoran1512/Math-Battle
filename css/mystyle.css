@@ -12,6 +12,7 @@ table {
     height: 90%;
     width: 100%;
 }
+
 td a:hover {
     background: blue;
 }
@@ -68,8 +69,28 @@ td a:hover {
     height: 40%;
 }
 
+.card-img {
+    padding: .2%;
+}
+
+#top-board {
+    height: 32%; 
+    width: 72%; 
+    left: 14%; 
+    position: absolute; 
+    top: 23%;
+}
+
+#bottom-board {
+    height: 32%; 
+    width: 72%; 
+    left: 14%; 
+    position: absolute; 
+    top: 55%;
+}
+
 #Phase {
-    left: 29%;
+    left: 30%;
     height: auto;
     bottom: 0%;
     width: 27%;

@@ -1,10 +1,34 @@
 export default class Game {
-    constructor(data, health = 40, round = 1, level = 1, phase="Recruit") {
+    constructor(data, health = 40, round = 10, level = 10, phase="Recruit") {
+        this.types = ['Fire', 'Water', 'Grass'];
         this.data = data;
         this.health = health;
         this.round = round;
         this.level = level;
         this.phase = phase;
+        this.my_board = [];
+    }
+
+    returnAvailableMinions() {
+        var available = [];
+        this.types.forEach((e) => {
+            for (let i = 0; i < this.data[e].length; i++) {
+                var temp = this.data[e][i]
+                if (temp.lvl <= this.level) {
+                    available.push(temp);
+                }
+            }
+        });
+        return available;
+    }
+
+    generateRandomBoard(size = 7) {
+        var pool = this.returnAvailableMinions()
+        var board_Row = []
+        for (let i = 0; i < size; i++) {
+            board_Row.push(pool[Math.floor(Math.random() * pool.length)]);
+        }
+        return board_Row
     }
 }
 
@@ -22,6 +46,13 @@ export const resestDomBoard = (game) => {
         $('#coins').append(coin);
     }
 
+    var build_a_board = game.generateRandomBoard(Math.min[game.level + 3, 7])
+
+    for (let i = 0; i < build_a_board.length; i++) {
+        console.log('hi')
+        $('#top-board').append(`<img class="card-img" src="${build_a_board[i].img}" alt="${build_a_board[i].name}: attack ${build_a_board[i].atk}, 
+                                health ${build_a_board[i].health}" height="70%" width="13%">`)
+    }
 }
 
 export const loadElementsintoDOM = (game) => {

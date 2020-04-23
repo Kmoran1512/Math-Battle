@@ -286,7 +286,7 @@
         "name": "River Dolphin",
         "atk": 8,
         "health": 11,
-        "img": "../static/images/cards/water/River_Dolphin.png",
+        "img": "../static/images/cards/water/River_Dolphin_Card.png",
         "lvl": 4,
         "type": "Water"
     }, {
