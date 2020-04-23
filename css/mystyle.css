@@ -28,9 +28,59 @@ td a:hover {
     border: gray 5px solid;
 }
 
-.hpBar {
-    background-color: #4CAF59;
-    color: white;
+.health-bar {
+    height: 100%; 
+    width: 2.5%; 
+    background-color: green; 
+    float: left; 
+    text-align: center;
+}
+
+#coins {
+    position: absolute; 
+    bottom: 3%; 
+    left: 88%; 
+    height: 92%; 
+    width: 6%; 
+    border: black solid 5px;
+}
+
+#hpBar {
+    color: #4CAF59;
+    bottom: 2%; 
+    position: absolute; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 40%; 
+    outline: black solid 5px; 
+    text-align: left; 
+    font-size: xx-large; 
+    height:  6%;
+}
+
+.in-top-info {
+    font-size: xx-large; 
+    bottom: 20%; 
+    position: absolute; 
+    color: white; 
+    background-color: black;
+    opacity: 60%; 
+    height: 40%;
+}
+
+#Phase {
+    left: 29%;
+    height: auto;
+    bottom: 0%;
+    width: 27%;
+}
+
+#Round {
+    left: 15%; 
+}
+
+#Level {
+   left: 60%;
 }
 
 .blankHp {
@@ -42,11 +92,6 @@ td a:hover {
     left: 0;
     height: 10%;
     width: 100%;
-}
-
-.enemyHP {
-    background-color: red;
-    color: white;
 }
 
 .image {
