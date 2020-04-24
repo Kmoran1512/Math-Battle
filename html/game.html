@@ -14,8 +14,8 @@
 
         <div id="head-nav-bar"></div>
 
-        <div class="back-ground" style="text-align: center;">
 
+        <div class="back-ground" style="text-align: center;">
            
             <div id="board" style="height: 85vh; width: 90%; display: inline-block; position: relative;">
                 
@@ -30,22 +30,34 @@
                 
                 </div>
 
-                <div id="top-board">
-
-                    
-
-                </div>
+                <div id="top-board"></div>
 
                 <div id="bottom-board"></div>
 
                 <div id="coins"></div>
 
-                <div id='hpBar'><div>
+                <div id='hpBar'> 
+                    <p id="health-helper"></p>
+                </div>
+                <div id="side-matter" style="height: 60%; bottom: -5%; width: 17%; position: relative; left: -5%; text-align: right;">
+
+                    <div style="top: 8%; position: absolute; width: 100%; height: 20%;">
+                        <button id="refresh-recruit" class="bottom-button" style="height: 100%; width: 50%;">Refresh</button>
+                    </div>
+                    
+                    <div style="top: 35%; position: absolute; width: 100%; height: 20%;">
+                        <button id="round-comp" class="bottom-button" style="height: 100%; width: 50%;">Complete Recruit</button>
+                    </div>
+
+                    <div style="top: 65%; position: absolute; width: 100%; height: 20%;">
+                        <button id="take-action" class="bottom-button" style="height: 100%; width: 50%;" disabled>Take Action</button>
+                    </div>
+                </div>
         
             </div>
            
 
-        </div>
+        </div> 
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
