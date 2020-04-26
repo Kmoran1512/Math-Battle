@@ -1,22 +1,25 @@
 export default class Game {
-    constructor(data, health = 40, round = 1, level = 1, coins = 3, phase="Recruit") {
+    constructor(data, health = 40, round = 1, level = 1, coins = 3, dmg = 0, opp_level = 1, phase="Recruit") {
         this.types = ['Fire', 'Water', 'Grass'];
         this.data = data;
         this.health = health;
         this.round = round;
         this.level = level;
         this.coins = coins;
+        this.dmg = dmg;
+        this.opp_level = opp_level
         this.phase = phase;
         this.my_board = [];
         this.buy_board = [];
+        this.opp_board = [];
     }
 
-    returnAvailableMinions() {
+    returnAvailableMinions(bottom = 1, level = this.level) {
         var available = [];
         this.types.forEach((e) => {
             for (let i = 0; i < this.data[e].length; i++) {
                 var temp = this.data[e][i]
-                if (temp.lvl <= this.level) {
+                if (temp.lvl <= level && temp.lvl >= bottom) {                    
                     available.push(temp);
                 }
             }
@@ -24,13 +27,13 @@ export default class Game {
         return available;
     }
 
-    generateRandomBoard(size = 7) {
-        var pool = this.returnAvailableMinions()
-        var board_Row = []
+    generateRandomBoard(size = 7, bottom = 1, level = this.level) {
+        var pool = this.returnAvailableMinions(bottom, level);
+        var board_row = []
         for (let i = 0; i < size; i++) {
-            board_Row.push(pool[Math.floor(Math.random() * pool.length)]);
+            board_row.push(pool[Math.floor(Math.random() * pool.length)]);
         }
-        return board_Row
+        return board_row
     }
 
     resetBuyBoard(size = Math.min(this.level + 2, 7)) {
@@ -46,6 +49,22 @@ export default class Game {
         }
     }
 
+    buildOpBoard() {
+        var lower_limit = 1;
+
+        if (this.round > 14) {
+            lowerLimit = Math.min(Math.round(this.round / 2) - 6, 7);
+        }
+
+        var size = Math.min(this.opp_level, 6)
+
+        if (this.my_board.length % 2 != this.opp_level % 2) {
+            size += 1;
+        }
+
+        this.opp_board = this.generateRandomBoard(size, lower_limit, this.opp_level);
+    }
+
     levelUp() {
         if (this.level < 7) {
             if (this.coins >= 4) {
@@ -59,11 +78,85 @@ export default class Game {
         }
     }
 
-    //
     purchase(name) {
-        if (true) {
+        if (this.my_board.length < 7) {
+            if (this.coins >= 3) {
+                var available = this.returnAvailableMinions();
 
+                available.forEach(e => {
+                    if (e.name == name) {
+                        this.my_board.push(e);
+                    }
+                });
+
+                this.buy_board.splice(this.buy_board.map(min => min.name).indexOf(name), 1);
+                this.coins -= 3;
+            } else {
+                alert(`it costs 3 coins to buy a minion, you only have ${this.coins}`);
+            }
+        } else {
+            alert("you cannot have more than 7 minions at one time");
         }
+    }
+
+    sellMinion(name) {
+        if (this.coins <= 9) {
+            this.my_board.splice(this.my_board.map(min => min.name).indexOf(name), 1);
+            this.coins += 1;
+        } else {
+            alert('you can only have a maximum of 10 coins at once')
+        }
+    }
+
+    commenceAtk() {
+        var curr_board = this.my_board;
+        var opp_board = this.opp_board;
+        var defeated_arr = []
+
+        for (let i = 0; i < opp_board.length; i++) {
+            if (curr_board[i] != undefined) {
+                while (curr_board[i].health > 0 && opp_board[i].health > 0) {
+                    curr_board[i].health = curr_board[i].health - opp_board[i].atk;
+                    opp_board[i].health = opp_board[i].health - curr_board[i].atk;
+                }
+            }
+                        
+            if (opp_board[i].health > 0) {
+                this.dmg += opp_board[i].lvl;
+            } else {
+                defeated_arr.push(i);
+            }
+        }
+
+        defeated_arr.sort()
+        for (let i = (defeated_arr - 1); i >= 0; i--) {
+            this.opp_board.splice(defeated_arr[i], 1);
+        }
+
+        if (this.dmg > 0) {
+            this.dmg += this.opp_level;
+        }
+    }
+
+    commenceBlock(num) {
+        var total_dmg = 0
+
+        if (this.dmg % num == 0) {
+            total_dmg = this.dmg / num;
+        } else {
+            total_dmg = this.dmg;
+        }
+
+        this.health -= total_dmg;
+
+        if (this.health > 0) {
+            this.round += 1
+            this.opp_level = Math.min(7, Math.round(this.round / 2))
+            this.coins = Math.min(10, this.round + 2)
+            this.phase = 'Recruit'
+        }
+
+        return total_dmg;
     }
 
     startGame() {
@@ -86,6 +179,8 @@ export const resestDomBoard = (game) => {
 
     if (game.coins <= 0) {
         $('#refresh-recruit')[0].disabled = true;
+    } else {
+        $('#refresh-recruit')[0].disabled = false;
     }
 
     $('#take-action')[0].disabled = true;
@@ -150,24 +245,118 @@ export const buySellHandler = (event) => {
     }
 }
 
-//
 export const actionTaken = (event) => {
+    var game = event.data.game;
+
     for (let i = ($('.buyable').length - 1); i >= 0; i--) {
         if ($($('.buyable')[i]).css('border-style') == 'solid') {
-            console.log($('.buyable')[i].alt.split(":")[0])
+            game.purchase($('.buyable')[i].alt.split(":")[0]);
         }
+    }
+    for (let i = ($('.sellable').length - 1); i >= 0; i--) {
+        if ($($('.sellable')[i]).css('border-style') == 'solid') {
+            game.sellMinion($('.sellable')[i].alt.split(":")[0]);
+        }
+    }
+
+    resestDomBoard(game)
+}
+
+//
+export const roundComplete = (event) => {
+    var game = event.data.game;
+    game.phase = "Attack";
+
+    $('#Level')[0].innerHTML = `Level: ${game.level}`;
+    $('#Phase')[0].innerHTML = `Attack`;
+    $('#refresh-recruit')[0].disabled = true;
+    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;">Commece Attack</button>`)
+
+    for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
+    game.buildOpBoard()
+
+    for (let i = 0; i < game.opp_board.length; i++) {
+        $('#top-board').append(`<img class="card-img buyable" id="" src="${game.opp_board[i].img}" 
+        alt="${game.opp_board[i].name}: attack ${game.opp_board[i].atk}, health ${game.opp_board[i].health}" height="70%" width="13%">`)
+    }
+    for (let i = 0; i < game.my_board.length; i++) {
+        $('#bottom-board').append(`<img class="card-img sellable" src="${game.my_board[i].img}" 
+        alt="${game.my_board[i].name}: attack ${game.my_board[i].atk}, health ${game.my_board[i].health}" height="70%" width="13%">`)
+    }
+
+    game.commenceAtk();
+}
+
+//
+export const attackComplete = (event) => {
+    var game = event.data.game;
+    game.phase = "Attack";
+
+    $('#Level')[0].innerHTML = `Level: ${game.level}`;
+    $('#Phase')[0].innerHTML = `Block`;
+    $('#refresh-recruit')[0].disabled = true;
+    $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Commece Block</button>`)
+
+    for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
+
+    for (let i = 0; i < game.opp_board.length; i++) {
+        $('#top-board').append(`<img class="card-img buyable" id="" src="${game.opp_board[i].img}" 
+        alt="${game.opp_board[i].name}: attack ${game.opp_board[i].atk}, health ${game.opp_board[i].health}" height="70%" width="13%">`)
+    }
+
+    if (game.dmg > 0) {
+        $('#bottom-board').append(`<div id="inc-dmg" style="background-color: black; color: white; opacity: 80%;"><div><h2> Incoming Damage: ${game.dmg} </h2></div>
+            <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select></div></div>`);
+    } else {
+        $('#bottom-board').append(`<div id="no-dmg" style="background-color: black; color: white; opacity: 80%;">
+            <h2>Good Job! you completely stopped the enemy</h2></div>`)
+    }
+}
+
+//
+export const blockComplete = (event) => {
+    var game = event.data.game;
+    var block = 0;
+
+    $('#Level')[0].innerHTML = `Level: ${game.level}`;
+    $('#Phase')[0].innerHTML = `Recruit`;
+    $('#def-comp').replaceWith(`<button id="round-comp" class="bottom-button" style="height: 100%; width: 50%;">Complete Recruit</button>`)
+
+    if (game.dmg > 0) {
+        block = $('#shield')[0].value;
+        var total = game.commenceBlock(block);
+        alert(`you take: ${total} damage`);
+        $('#inc-dmg').remove()
+    } else {
+        game.commenceBlock(1); 
+        $('#no-dmg').remove()
+    }
+
+    if (game.health < 0) {
+        clearPreviousDom();
+        $('#board').replaceWith(`<h1 style="color: black; text-align: center; top: 50%; position: absolute;"> You lost on round ${game.round} \n Good game! </h1>`);
+    } else {
+        resestDomBoard(game);
     }
 
 }
 
 export const loadElementsintoDOM = (game) => {
-    game.startGame()
-    resestDomBoard(game)
-    $(document).on('click', '#lvl-up', {game: game}, levelUpHandler)
-    $(document).on('click', '.buyable', {color: 'blue'}, buySellHandler)
-    $(document).on('click', '.sellable', {color: 'green'}, buySellHandler)
-    $(document).on('click', '#take-action', {game: game}, actionTaken)
-    $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit)
+    game.startGame();
+    resestDomBoard(game);
+    $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
+    $(document).on('click', '.buyable', {color: 'blue'}, buySellHandler);
+    $(document).on('click', '.sellable', {color: 'green'}, buySellHandler);
+    $(document).on('click', '#take-action', {game: game}, actionTaken);
+    $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit);
+    $(document).on('click', '#round-comp', {game: game}, roundComplete);
+    $(document).on('click', '#atk-comp', {game: game}, attackComplete);
+    $(document).on('click', '#def-comp', {game: game}, blockComplete);
 }
 
 let request = new XMLHttpRequest();
