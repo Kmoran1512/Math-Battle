@@ -53,14 +53,10 @@ export default class Game {
         var lower_limit = 1;
 
         if (this.round > 14) {
-            lowerLimit = Math.min(Math.round(this.round / 2) - 6, 7);
+            lower_limit = Math.min(Math.round(this.round / 2) - 6, 7);
         }
 
-        var size = Math.min(this.opp_level, 6)
-
-        if (this.my_board.length % 2 != this.opp_level % 2) {
-            size += 1;
-        }
+        var size = Math.min(this.opp_level, 7)
 
         this.opp_board = this.generateRandomBoard(size, lower_limit, this.opp_level);
     }
@@ -100,36 +96,40 @@ export default class Game {
     }
 
     sellMinion(name) {
-        if (this.coins <= 9) {
-            this.my_board.splice(this.my_board.map(min => min.name).indexOf(name), 1);
-            this.coins += 1;
-        } else {
-            alert('you can only have a maximum of 10 coins at once')
+        this.my_board.splice(this.my_board.map(min => min.name).indexOf(name), 1);
+        this.coins += 1;
+
+        if (this.coins > 10) {
+            this.coins = 10;
         }
     }
 
     commenceAtk() {
-        var curr_board = this.my_board;
-        var opp_board = this.opp_board;
+
+        var curr_board = [];
+        this.my_board.forEach(e => {curr_board.push([e.atk, e.health])});
+        var opp_board = [];
+        this.opp_board.forEach(e => {opp_board.push([e.atk, e.health])});
+
         var defeated_arr = []
 
         for (let i = 0; i < opp_board.length; i++) {
             if (curr_board[i] != undefined) {
-                while (curr_board[i].health > 0 && opp_board[i].health > 0) {
-                    curr_board[i].health = curr_board[i].health - opp_board[i].atk;
-                    opp_board[i].health = opp_board[i].health - curr_board[i].atk;
+                while (curr_board[i][1] > 0 && opp_board[i][1] > 0) {
+                    curr_board[i][1] = curr_board[i][1] - opp_board[i][0];
+                    opp_board[i][1] = opp_board[i][1] - curr_board[i][0];
                 }
             }
                         
-            if (opp_board[i].health > 0) {
-                this.dmg += opp_board[i].lvl;
+            if (opp_board[i][1] > 0) {
+                this.dmg += this.opp_board[i].lvl;
             } else {
                 defeated_arr.push(i);
             }
+
         }
 
-        defeated_arr.sort()
-        for (let i = (defeated_arr - 1); i >= 0; i--) {
+        for (let i = (defeated_arr.length - 1); i >= 0; i--) {
             this.opp_board.splice(defeated_arr[i], 1);
         }
 
@@ -150,10 +150,12 @@ export default class Game {
         this.health -= total_dmg;
 
         if (this.health > 0) {
-            this.round += 1
-            this.opp_level = Math.min(7, Math.round(this.round / 2))
-            this.coins = Math.min(10, this.round + 2)
-            this.phase = 'Recruit'
+            this.round += 1;
+            this.opp_level = Math.min(7, Math.round(this.round / 2));
+            this.coins = Math.min(10, this.round + 2);
+            this.phase = 'Recruit';
+            this.opp_board = [];
+            this.dmg = 0;
         }
 
         return total_dmg;
@@ -161,7 +163,7 @@ export default class Game {
 
     startGame() {
         this.resetBuyBoard()
-        this.my_board = this.generateRandomBoard(1)
+        this.my_board = this.generateRandomBoard(Math.min(this.round, 7))
     }
 }
 
@@ -171,9 +173,38 @@ export const clearPreviousDom = () => {
     for (let i = ($('.coin-img').length - 1); i >= 0; i--) { $('.coin-img')[i].remove();}
 }
 
+export const boardOrder = (arr, empty) => {
+    var return_arr = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+
+    for (let i = 1; i <= 7; i++) {
+        var pos = (Math.pow(-1,(i%2))*(Math.trunc(i/2))) + 3;
+        if (arr[i - 1] != undefined) {
+            return_arr[pos] = arr[i - 1];
+        } else {
+            return_arr[pos] = empty;
+        }
+    }
+
+    return return_arr;
+}
+
+export const drawBoard = (loc, arr, empty, classes) => {
+    var visual_board = boardOrder(arr, empty);
+
+    for (let i = 0; i < visual_board.length; i++) {
+        if (visual_board[i].atk == 0) {
+            $(loc).append(`<img class="card-img" src="${visual_board[i].img}" 
+            alt="${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%">`);
+        } else {
+            $(loc).append(`<img class="card-img ${classes}" src="${visual_board[i].img}" 
+            alt="${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%">`);    
+        }
+    }
+}
+
 export const resestDomBoard = (game) => {
-    var healthBar = `<div class="health-bar">|</div>`
-    var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" height="10%" width="100%"/>`
+    var healthBar = `<div class="health-bar">|</div>`;
+    var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" height="10%" width="100%"/>`;
 
     clearPreviousDom()
 
@@ -190,19 +221,17 @@ export const resestDomBoard = (game) => {
     } else {
         $('#Level')[0].innerHTML = `Level: ${game.level}`
     }
+
+    $('#Round')[0].innerHTML = `Round: ${game.round}`
+
     $('#health-helper')[0].innerHTML = `${game.health}`;
+
     for (let i = 0; i < game.health; i++) { $('#hpBar').append(healthBar); }
     for (let i = 0; i < game.coins; i++) { $('#coins').append(coin); }
 
-    for (let i = 0; i < game.buy_board.length; i++) {
-        $('#top-board').append(`<img class="card-img buyable" id="" src="${game.buy_board[i].img}" 
-        alt="${game.buy_board[i].name}: attack ${game.buy_board[i].atk}, health ${game.buy_board[i].health}" height="70%" width="13%">`)
-    }
-
-    for (let i = 0; i < game.my_board.length; i++) {
-        $('#bottom-board').append(`<img class="card-img sellable" src="${game.my_board[i].img}" 
-        alt="${game.my_board[i].name}: attack ${game.my_board[i].atk}, health ${game.my_board[i].health}" height="70%" width="13%">`)
-    }
+    drawBoard('#top-board', game.buy_board, game.data['None'][0], 'buyable')
+    
+    drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'sellable')
 
 }
 
@@ -275,14 +304,8 @@ export const roundComplete = (event) => {
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
     game.buildOpBoard()
 
-    for (let i = 0; i < game.opp_board.length; i++) {
-        $('#top-board').append(`<img class="card-img buyable" id="" src="${game.opp_board[i].img}" 
-        alt="${game.opp_board[i].name}: attack ${game.opp_board[i].atk}, health ${game.opp_board[i].health}" height="70%" width="13%">`)
-    }
-    for (let i = 0; i < game.my_board.length; i++) {
-        $('#bottom-board').append(`<img class="card-img sellable" src="${game.my_board[i].img}" 
-        alt="${game.my_board[i].name}: attack ${game.my_board[i].atk}, health ${game.my_board[i].health}" height="70%" width="13%">`)
-    }
+    drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
+    drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'battle')
 
     game.commenceAtk();
 }
@@ -299,10 +322,7 @@ export const attackComplete = (event) => {
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
 
-    for (let i = 0; i < game.opp_board.length; i++) {
-        $('#top-board').append(`<img class="card-img buyable" id="" src="${game.opp_board[i].img}" 
-        alt="${game.opp_board[i].name}: attack ${game.opp_board[i].atk}, health ${game.opp_board[i].health}" height="70%" width="13%">`)
-    }
+    drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
 
     if (game.dmg > 0) {
         $('#bottom-board').append(`<div id="inc-dmg" style="background-color: black; color: white; opacity: 80%;"><div><h2> Incoming Damage: ${game.dmg} </h2></div>
@@ -339,7 +359,7 @@ export const blockComplete = (event) => {
 
     if (game.health < 0) {
         clearPreviousDom();
-        $('#board').replaceWith(`<h1 style="color: black; text-align: center; top: 50%; position: absolute;"> You lost on round ${game.round} \n Good game! </h1>`);
+        $('#board').replaceWith(`<h1 style="color: black; text-align: center; top: 50%; position: absolute; left: 45%"> You lost on round ${game.round} \n Good game! </h1>`);
     } else {
         resestDomBoard(game);
     }
