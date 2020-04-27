@@ -384,6 +384,7 @@ export const blockComplete = (event, game=null) => {
         appendAnimation('Defeat.mp4')
     } else {
         appendAnimation('_Buying_phase.mp4');
+        game.resetBuyBoard();
         resestDomBoard(game);
     }
 
