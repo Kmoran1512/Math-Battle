@@ -139,10 +139,12 @@ export default class Game {
     }
 
     commenceBlock(num) {
-        var total_dmg = 0
+        var total_dmg = 0;
+        var block = false;
 
         if (this.dmg % num == 0) {
             total_dmg = this.dmg / num;
+            block = true;
         } else {
             total_dmg = this.dmg;
         }
@@ -158,12 +160,23 @@ export default class Game {
             this.dmg = 0;
         }
 
-        return total_dmg;
+        return [block, total_dmg];
     }
 
     startGame() {
         this.resetBuyBoard()
         this.my_board = this.generateRandomBoard(Math.min(this.round, 7))
+    }
+}
+
+export const appendAnimation = (file) => {
+    if ($('.canvas-video').length == 0) {
+        $('#canvas')[0].hidden = false;
+        $('#canvas').append(`<video class="canvas-video" src="../static/animations/${file}" autoplay height="100%" width="100%"></video>`)
+        $('.canvas-video')[0].onended = () => {
+            $('.canvas-video').remove();
+            $('#canvas')[0].hidden = true;
+        };
     }
 }
 
@@ -291,7 +304,6 @@ export const actionTaken = (event) => {
     resestDomBoard(game)
 }
 
-//
 export const roundComplete = (event) => {
     var game = event.data.game;
     game.phase = "Attack";
@@ -299,18 +311,19 @@ export const roundComplete = (event) => {
     $('#Level')[0].innerHTML = `Level: ${game.level}`;
     $('#Phase')[0].innerHTML = `Attack`;
     $('#refresh-recruit')[0].disabled = true;
-    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;">Commece Attack</button>`)
+    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;">Complete Attack Phase</button>`)
+
+    appendAnimation('Atk_Phase.mp4')
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
     game.buildOpBoard()
 
     drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
     drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'battle')
-
+    
     game.commenceAtk();
 }
 
-//
 export const attackComplete = (event) => {
     var game = event.data.game;
     game.phase = "Attack";
@@ -318,13 +331,14 @@ export const attackComplete = (event) => {
     $('#Level')[0].innerHTML = `Level: ${game.level}`;
     $('#Phase')[0].innerHTML = `Block`;
     $('#refresh-recruit')[0].disabled = true;
-    $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Commece Block</button>`)
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
 
     drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
 
     if (game.dmg > 0) {
+        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Complete Block Phase</button>`)
+
         $('#bottom-board').append(`<div id="inc-dmg" style="background-color: black; color: white; opacity: 80%;"><div><h2> Incoming Damage: ${game.dmg} </h2></div>
             <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
             <option value="2">2</option>
@@ -333,34 +347,44 @@ export const attackComplete = (event) => {
             <option value="5">5</option>
         </select></div></div>`);
     } else {
-        $('#bottom-board').append(`<div id="no-dmg" style="background-color: black; color: white; opacity: 80%;">
-            <h2>Good Job! you completely stopped the enemy</h2></div>`)
+        appendAnimation('Victory_1.mp4');
+
+        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Begin Next Turn</button>`)
     }
 }
 
-//
-export const blockComplete = (event) => {
-    var game = event.data.game;
+export const blockComplete = (event, game=null) => {
+    if (game == null) {
+        game = event.data.game;
+    }
     var block = 0;
 
     $('#Level')[0].innerHTML = `Level: ${game.level}`;
     $('#Phase')[0].innerHTML = `Recruit`;
-    $('#def-comp').replaceWith(`<button id="round-comp" class="bottom-button" style="height: 100%; width: 50%;">Complete Recruit</button>`)
+    $('#def-comp').replaceWith(`<button id="round-comp" class="bottom-button" style="height: 100%; width: 50%;">Complete Recruit Phase</button>`)
 
     if (game.dmg > 0) {
         block = $('#shield')[0].value;
+
         var total = game.commenceBlock(block);
-        alert(`you take: ${total} damage`);
         $('#inc-dmg').remove()
+
+        if (!total[0]) {
+            appendAnimation('Blocking_Fail.mp4');
+        } else {
+            appendAnimation('Block_Success.mp4');
+        }
+
     } else {
         game.commenceBlock(1); 
-        $('#no-dmg').remove()
     }
 
     if (game.health < 0) {
         clearPreviousDom();
-        $('#board').replaceWith(`<h1 style="color: black; text-align: center; top: 50%; position: absolute; left: 45%"> You lost on round ${game.round} \n Good game! </h1>`);
+        appendAnimation('Defeat.mp4')
     } else {
+        appendAnimation('_Buying_phase.mp4');
+        game.resetBuyBoard();
         resestDomBoard(game);
     }
 
@@ -369,14 +393,16 @@ export const blockComplete = (event) => {
 export const loadElementsintoDOM = (game) => {
     game.startGame();
     resestDomBoard(game);
-    $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
-    $(document).on('click', '.buyable', {color: 'blue'}, buySellHandler);
-    $(document).on('click', '.sellable', {color: 'green'}, buySellHandler);
-    $(document).on('click', '#take-action', {game: game}, actionTaken);
-    $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit);
-    $(document).on('click', '#round-comp', {game: game}, roundComplete);
-    $(document).on('click', '#atk-comp', {game: game}, attackComplete);
-    $(document).on('click', '#def-comp', {game: game}, blockComplete);
+    {    
+        $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
+        $(document).on('click', '.buyable', {color: 'blue'}, buySellHandler);
+        $(document).on('click', '.sellable', {color: 'green'}, buySellHandler);
+        $(document).on('click', '#take-action', {game: game}, actionTaken);
+        $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit);
+        $(document).on('click', '#round-comp', {game: game}, roundComplete);
+        $(document).on('click', '#atk-comp', {game: game}, attackComplete);
+        $(document).on('click', '#def-comp', {game: game}, blockComplete);
+    }
 }
 
 let request = new XMLHttpRequest();
