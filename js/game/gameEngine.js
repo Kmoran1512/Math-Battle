@@ -142,11 +142,21 @@ export default class Game {
         var total_dmg = 0;
         var block = false;
 
-        if (this.dmg % num == 0) {
-            total_dmg = this.dmg / num;
-            block = true;
+        if (typeof(num) == String) {
+            const regex = /^1?$|^(11+?)\1+$/
+            if (!('1'.repeat(n).match(regex))) {
+                total_dmg = Math.trunc(this.dmg / 3);
+                block = true;
+            } else {
+                total_dmg = this.dmg;
+            }
         } else {
-            total_dmg = this.dmg;
+            if (this.dmg % num === 0) {
+                total_dmg = this.dmg / num;
+                block = true;
+            } else {
+                total_dmg = this.dmg;
+            }
         }
 
         this.health -= total_dmg;
@@ -280,9 +290,18 @@ export const buySellHandler = (event) => {
     if ($(event.target).css('border-style') == 'solid') {
         $(event.target).css('border', '');
         $('#take-action')[0].disabled = true;
+        $('#round-comp')[0].disabled = false;
+        $('#refresh-recruit')[0].disabled = false;
     } else {
         clearBorders()
         $(event.target).css({border: `${event.data.color} solid 3px`})
+        $('#round-comp')[0].disabled = true;
+        $('#refresh-recruit')[0].disabled = true;
+        if (event.data.color == 'blue') {
+            $('#take-action')[0].innerHTML = 'Buy Minion'
+        } else if (event.data.color == 'green') {
+            $('#take-action')[0].innerHTML = 'Sell Minion'
+        }
         $('#take-action')[0].disabled = false;
     }
 }
@@ -343,8 +362,9 @@ export const attackComplete = (event) => {
             <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="4">5</option>
+            <option value="5">7</option>
+            <option value="prime">Prime</option>
         </select></div></div>`);
     } else {
         appendAnimation('Victory_1.mp4');
