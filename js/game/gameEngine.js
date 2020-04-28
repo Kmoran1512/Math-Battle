@@ -293,6 +293,11 @@ export const buySellHandler = (event) => {
     } else {
         clearBorders()
         $(event.target).css({border: `${event.data.color} solid 3px`})
+        if (event.data.color == 'blue') {
+            $('#take-action')[0].innerHTML = 'Buy Minion'
+        } else if (event.data.color == 'green') {
+            $('#take-action')[0].innerHTML = 'Sell Minion'
+        }
         $('#take-action')[0].disabled = false;
     }
 }
