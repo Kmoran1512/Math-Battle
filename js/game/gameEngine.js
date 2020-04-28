@@ -142,11 +142,21 @@ export default class Game {
         var total_dmg = 0;
         var block = false;
 
-        if (this.dmg % num == 0) {
-            total_dmg = this.dmg / num;
-            block = true;
+        if (typeof(num) == String) {
+            const regex = /^1?$|^(11+?)\1+$/
+            if (!('1'.repeat(n).match(regex))) {
+                total_dmg = Math.trunc(this.dmg / 3);
+                block = true;
+            } else {
+                total_dmg = this.dmg;
+            }
         } else {
-            total_dmg = this.dmg;
+            if (this.dmg % num === 0) {
+                total_dmg = this.dmg / num;
+                block = true;
+            } else {
+                total_dmg = this.dmg;
+            }
         }
 
         this.health -= total_dmg;
@@ -343,8 +353,9 @@ export const attackComplete = (event) => {
             <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="4">5</option>
+            <option value="5">7</option>
+            <option value="prime">Prime</option>
         </select></div></div>`);
     } else {
         appendAnimation('Victory_1.mp4');
