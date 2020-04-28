@@ -238,6 +238,10 @@ export const resestDomBoard = (game) => {
     }
 
     $('#take-action')[0].disabled = true;
+    $('#round-comp')[0].disabled = false;
+    $('#refresh-recruit')[0].disabled = false;
+
+    $('#take-action')[0].disabled = true;
 
     if (game.level < 7) {
         $('#Level')[0].innerHTML = `Level: ${game.level} <button id="lvl-up" style="color: black; height: 100%;"> Level Up </button>`
