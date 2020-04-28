@@ -290,9 +290,13 @@ export const buySellHandler = (event) => {
     if ($(event.target).css('border-style') == 'solid') {
         $(event.target).css('border', '');
         $('#take-action')[0].disabled = true;
+        $('#round-comp')[0].disabled = false;
+        $('#refresh-recruit')[0].disabled = false;
     } else {
         clearBorders()
         $(event.target).css({border: `${event.data.color} solid 3px`})
+        $('#round-comp')[0].disabled = true;
+        $('#refresh-recruit')[0].disabled = true;
         if (event.data.color == 'blue') {
             $('#take-action')[0].innerHTML = 'Buy Minion'
         } else if (event.data.color == 'green') {
