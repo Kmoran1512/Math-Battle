@@ -17,12 +17,28 @@
 
             <div id="guest-or-user">
 
-                <div aria-label="guest creation link">
+                <div id='create-acc-from-guest' aria-label="guest creation">
 
-                    <p tabindex="9"> Account settings are coming soon </p>
+                    <h3> If you want to create an account from your guest account, do so below! </h3>
+
+                    <div class="form-group">
+                        <label for="txt-guest-reg-email"  id="email-label">Email address</label>
+                        <input type="email" class="form-control" id="txt-guest-reg-email" aria-labelledby="email-label" placeholder="Enter email" tabindex="4">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="txt-guest-reg-pass" id="pass-label">Password</label>
+                        <input type="password" class="form-control" id="txt-guest-reg-pass" aria-labelledby="pass-label" placeholder="Password" tabindex="5">
+                    </div>
+        
+                    <button type="submit" class="btn btn-warning" id="btn-guest-reg" name="create-account-from-guest" tabindex="">Register</button>
     
-                    <button type="button" onclick="location.href = 'guest_register.html'" hidden tabindex="10"> Create account </button>
-    
+                </div>
+
+                <div>
+
+
+
                 </div>
 
             </div>

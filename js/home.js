@@ -51,6 +51,19 @@ var loaded = (user) => {
 }
 
 //Account Page
-{
-    
+{   
+    if (len($('#guest-or-user')) != 0) {
+
+        
+        
+        $(document).on('click', '#create-acc-from-guest', createAccFromGuest)
+    }
+
+    let createAccFromGuest = (event) => {
+        if (firebase.auth().currentUser.isAnonymous) {
+            var cred = firebase.auth.EmailAuthProvider.credential(email, password);
+            firebase.auth().currentUser.linkAndRetrieveDataWithCredential(cred);
+          }
+    }
+
 }
