@@ -104,6 +104,11 @@ export default class Game {
         }
     }
 
+    checkTypeAdvantage(attacker, defender) {
+        return attacker.type == 'Fire' && defender.type == "Grass" || attacker.type == 'Water' && defender.type == "Fire" || 
+                attacker.type == 'Grass' && defender.type == "Water";
+    }
+
     commenceAtk() {
 
         var curr_board = [];
@@ -116,8 +121,17 @@ export default class Game {
         for (let i = 0; i < opp_board.length; i++) {
             if (curr_board[i] != undefined) {
                 while (curr_board[i][1] > 0 && opp_board[i][1] > 0) {
-                    curr_board[i][1] = curr_board[i][1] - opp_board[i][0];
-                    opp_board[i][1] = opp_board[i][1] - curr_board[i][0];
+                    if (this.checkTypeAdvantage(this.opp_board[i], this.my_board[i])) {
+                        curr_board[i][1] = curr_board[i][1] - 2 * opp_board[i][0];
+                    } else {
+                        curr_board[i][1] = curr_board[i][1] - opp_board[i][0];
+                    }
+
+                    if (this.checkTypeAdvantage(this.my_board[i], this.opp_board[i])) {
+                        opp_board[i][1] = opp_board[i][1] - 2 * curr_board[i][0];
+                    } else {
+                        opp_board[i][1] = opp_board[i][1] - curr_board[i][0];
+                    }
                 }
             }
                         
@@ -237,6 +251,7 @@ export const resestDomBoard = (game) => {
         $('#refresh-recruit')[0].disabled = false;
     }
 
+    $('#round-comp')[0].disabled = false;
     $('#take-action')[0].disabled = true;
  
     if (game.level < 7) {
