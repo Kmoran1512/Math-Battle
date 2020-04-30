@@ -196,8 +196,8 @@
     }, {
         "id": 10,
         "name": "Wendigo",
-        "atk": 11,
-        "health": 11,
+        "atk": 10,
+        "health": 10,
         "img": "../static/images/cards/grass/Windigo_Card.png",
         "lvl": 5,
         "type": "Grass"

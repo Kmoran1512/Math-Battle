@@ -225,23 +225,26 @@ export const boardOrder = (arr, empty) => {
     return return_arr;
 }
 
-export const drawBoard = (loc, arr, empty, classes) => {
+export const drawBoard = (loc, arr, empty, classes, index = 1) => {
     var visual_board = boardOrder(arr, empty);
 
     for (let i = 0; i < visual_board.length; i++) {
         if (visual_board[i].atk == 0) {
             $(loc).append(`<img class="card-img" src="${visual_board[i].img}" 
-            alt="${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%">`);
+            alt="" height="70%" width="13%">`);
         } else {
             $(loc).append(`<img class="card-img ${classes}" src="${visual_board[i].img}" 
-            alt="${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%">`);    
+            alt="${classes} ${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%" tabindex='${index}'>`);
+            index += 1;    
         }
     }
+
+    return index
 }
 
 export const resestDomBoard = (game) => {
     var healthBar = `<div class="health-bar">|</div>`;
-    var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" height="10%" width="100%"/>`;
+    var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" alt="coin" height="10%" width="100%"/>`;
 
     clearPreviousDom()
 
@@ -267,9 +270,18 @@ export const resestDomBoard = (game) => {
     for (let i = 0; i < game.health; i++) { $('#hpBar').append(healthBar); }
     for (let i = 0; i < game.coins; i++) { $('#coins').append(coin); }
 
-    drawBoard('#top-board', game.buy_board, game.data['None'][0], 'buyable')
+    $('#top-board')[0].setAttribute('aria-label', "recruit board")
+    $('#bottom-board')[0].setAttribute('aria-label', "your board")
+    $('#coins')[0].setAttribute('aria-label', `you have ${game.coins}`)
+    $('#hpBar')[0].setAttribute('aria-label', `you have ${game.health}`)
+
+    var index = drawBoard('#top-board', game.buy_board, game.data['None'][0], 'buyable')
     
-    drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'sellable')
+    index = drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'sellable', index)
+
+    $('#refresh-recruit')[0].setAttribute('tabindex', index)
+    $('#round-comp')[0].setAttribute('tabindex', index + 1)
+    $('#take-action')[0].setAttribute('tabindex', index + 2)
 
 }
 
@@ -309,9 +321,13 @@ export const buySellHandler = (event) => {
         clearBorders()
         $(event.target).css({border: `${event.data.color} solid 3px`})
         if (event.data.color == 'blue') {
+            console.log('buying')
             $('#take-action')[0].innerHTML = 'Buy Minion'
+            $('#take-action')[0].setAttribute('aria-label', 'Buy Minion Button')
         } else if (event.data.color == 'green') {
+            console.log('selling')
             $('#take-action')[0].innerHTML = 'Sell Minion'
+            $('#take-action')[0].setAttribute('aria-label', 'Sell Minion Button')
         }
         $('#take-action')[0].disabled = false;
     }
@@ -322,12 +338,14 @@ export const actionTaken = (event) => {
 
     for (let i = ($('.buyable').length - 1); i >= 0; i--) {
         if ($($('.buyable')[i]).css('border-style') == 'solid') {
-            game.purchase($('.buyable')[i].alt.split(":")[0]);
+            $('audio#buy-sound')[0].play()
+            game.purchase($('.buyable')[i].alt.replace('buyable ', '').split(":")[0]);
         }
     }
     for (let i = ($('.sellable').length - 1); i >= 0; i--) {
         if ($($('.sellable')[i]).css('border-style') == 'solid') {
-            game.sellMinion($('.sellable')[i].alt.split(":")[0]);
+            $('audio#sold-sound')[0].play()
+            game.sellMinion($('.sellable')[i].alt.replace('sellable ', '').split(":")[0]);
         }
     }
 
@@ -341,15 +359,16 @@ export const roundComplete = (event) => {
     $('#Level')[0].innerHTML = `Level: ${game.level}`;
     $('#Phase')[0].innerHTML = `Attack`;
     $('#refresh-recruit')[0].disabled = true;
-    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;">Complete Attack Phase</button>`)
 
     appendAnimation('Atk_Phase.mp4')
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
     game.buildOpBoard()
 
-    drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
-    drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'battle')
+    var index = drawBoard('#top-board', game.opp_board, game.data['None'][0], "opponent's")
+    index = drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'your', index)
+
+    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;" tabindex='${index}'>Complete Attack Phase</button>`)
     
     game.commenceAtk();
 }
@@ -364,10 +383,12 @@ export const attackComplete = (event) => {
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
 
-    drawBoard('#top-board', game.opp_board, game.data['None'][0], 'battle')
+    var index = drawBoard('#top-board', game.opp_board, game.data['None'][0], 'surving')
 
     if (game.dmg > 0) {
-        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Complete Block Phase</button>`)
+        appendAnimation('Block_Phase.mp4');
+
+        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;" tabindex='${index}'>Complete Block Phase</button>`)
 
         $('#bottom-board').append(`<div id="inc-dmg" style="background-color: black; color: white; opacity: 80%;"><div><h2> Incoming Damage: ${game.dmg} </h2></div>
             <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
@@ -380,7 +401,7 @@ export const attackComplete = (event) => {
     } else {
         appendAnimation('Victory_1.mp4');
 
-        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;">Begin Next Turn</button>`)
+        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;" tabindex='${index}'>Begin Next Turn</button>`)
     }
 }
 
@@ -401,16 +422,28 @@ export const blockComplete = (event, game=null) => {
         $('#inc-dmg').remove()
 
         if (!total[0]) {
-            appendAnimation('Blocking_Fail.mp4');
+            if (game.health <= 0) {
+                clearPreviousDom();
+                appendAnimation('Defeat.mp4');
+                window.location = 'home.html'
+            } else {
+                appendAnimation('Blocking_Fail.mp4');
+            }
         } else {
-            appendAnimation('Block_Success.mp4');
+            if (game.health <= 0) {
+                clearPreviousDom();
+                appendAnimation('Defeat.mp4');
+                window.location = 'home.html'
+            } else {
+                appendAnimation('Block_Success.mp4');
+            }
         }
 
     } else {
         game.commenceBlock(1); 
     }
 
-    if (game.health < 0) {
+    if (game.health <= 0) {
         clearPreviousDom();
         appendAnimation('Defeat.mp4')
     } else {
