@@ -4,7 +4,7 @@ $('#page-head').append(`
     <meta charset="utf-8">
 
     <meta name="authors" content="Chris Cui, Kyle Moran & Rachel Woodall">
-    <meta name="description" content="A game designed to help teach children and audults
+    <meta name="description" content="A game designed to help teach children and adults
         who have trouble learning math to learn in a fun and interactive way.">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

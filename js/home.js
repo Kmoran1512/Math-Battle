@@ -63,15 +63,15 @@ const pageLoaded = () => {
 
                     <div class="form-group">
                         <label for="txt-guest-reg-email"  id="email-label">Email address</label>
-                        <input type="email" class="form-control" id="txt-guest-reg-email" aria-labelledby="email-label" placeholder="Enter email" tabindex="">
+                        <input type="email" class="form-control" id="txt-guest-reg-email" aria-labelledby="email-label" placeholder="Enter email">
                     </div>
 
                     <div class="form-group">
                         <label for="txt-guest-reg-pass" id="pass-label">Password</label>
-                        <input type="password" class="form-control" id="txt-guest-reg-pass" aria-labelledby="pass-label" placeholder="Password" tabindex="">
+                        <input type="password" class="form-control" id="txt-guest-reg-pass" aria-labelledby="pass-label" placeholder="Password">
                     </div>
 
-                    <button type="submit" class="btn btn-warning" id="btn-guest-reg" name="create-account-from-guest" tabindex="">Register</button>
+                    <button type="submit" class="btn btn-warning" id="btn-guest-reg" name="create-account-from-guest">Register</button>
 
                 </div>
             `);
@@ -101,17 +101,17 @@ const pageLoaded = () => {
                     <div>
 
                         <label for="txt-pass-reset" id="res-pass-lbl">Enter your email below</label>
-                        <input type="email" class="form-control" id="txt-pass-reset" aria-labelledby="res-pass-lbl" placeholder="Email" tabindex="">
+                        <input type="email" class="form-control" id="txt-pass-reset" aria-labelledby="res-pass-lbl" placeholder="Email">
 
                         <br />
                         
-                        <button type="submit" class="btn btn-dark" id="pass-reset" name="btn-res-acc" tabindex="">Reset Password</button>
+                        <button type="submit" class="btn btn-dark" id="pass-reset" name="btn-res-acc">Reset Password</button>
 
                     </div>
 
                     <br /> <br />
 
-                    <button type="button" class="btn btn-danger" id="del-acc" name="btn-del-acc" tabindex=""> Delete Account </button>
+                    <button type="button" class="btn btn-danger" id="del-acc" name="btn-del-acc"> Delete Account </button>
 
                 </div>
             `);
