@@ -449,7 +449,7 @@ export const blockComplete = (event, game=null) => {
     } else {
         game.resetBuyBoard();
         resestDomBoard(game);
-        appendAnimation('_Buying_phase.mp4');
+        appendAnimation('Buying_phase.mp4');
     }
 
 }
