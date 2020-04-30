@@ -256,7 +256,7 @@ export const resestDomBoard = (game) => {
 
     $('#round-comp')[0].disabled = false;
     $('#take-action')[0].disabled = true;
-
+ 
     if (game.level < 7) {
         $('#Level')[0].innerHTML = `Level: ${game.level} <button id="lvl-up" style="color: black; height: 100%;"> Level Up </button>`
     } else {
@@ -317,13 +317,9 @@ export const buySellHandler = (event) => {
     if ($(event.target).css('border-style') == 'solid') {
         $(event.target).css('border', '');
         $('#take-action')[0].disabled = true;
-        $('#round-comp')[0].disabled = false;
-        $('#refresh-recruit')[0].disabled = false;
     } else {
         clearBorders()
         $(event.target).css({border: `${event.data.color} solid 3px`})
-        $('#round-comp')[0].disabled = true;
-        $('#refresh-recruit')[0].disabled = true;
         if (event.data.color == 'blue') {
             console.log('buying')
             $('#take-action')[0].innerHTML = 'Buy Minion'
@@ -451,9 +447,9 @@ export const blockComplete = (event, game=null) => {
         clearPreviousDom();
         appendAnimation('Defeat.mp4')
     } else {
-        appendAnimation('Buying_phase.mp4');
         game.resetBuyBoard();
         resestDomBoard(game);
+        appendAnimation('Buying_phase.mp4');
     }
 
 }
