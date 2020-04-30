@@ -451,7 +451,7 @@ export const blockComplete = (event, game=null) => {
         clearPreviousDom();
         appendAnimation('Defeat.mp4')
     } else {
-        appendAnimation('_Buying_phase.mp4');
+        appendAnimation('Buying_phase.mp4');
         game.resetBuyBoard();
         resestDomBoard(game);
     }
