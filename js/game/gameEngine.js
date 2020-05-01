@@ -156,20 +156,25 @@ export default class Game {
         var total_dmg = 0;
         var block = false;
 
-        if (typeof(num) == String) {
-            const regex = /^1?$|^(11+?)\1+$/
-            if (!('1'.repeat(n).match(regex))) {
+        if (num == 'p') {
+            console.log(num)
+            if (this.dmg == 2 || this.dmg == 3 || this.dmg == 5 || this.dmg == 7 || (this.dmg % 2 != 0 && this.dmg % 3 != 0 && this.dmg % 5 != 0 && this.dmg % 7 != 0)) {
+                console.log('prime works')
                 total_dmg = Math.trunc(this.dmg / 3);
                 block = true;
             } else {
+                console.log('not prime')
                 total_dmg = this.dmg;
             }
         } else {
-            if (this.dmg % num === 0) {
+            if (this.dmg % num == 0) {
+                console.log('clank')
                 total_dmg = this.dmg / num;
                 block = true;
             } else {
+                console.log('crash')
                 total_dmg = this.dmg;
+                block = false;
             }
         }
 
@@ -193,13 +198,17 @@ export default class Game {
     }
 }
 
-export const appendAnimation = (file) => {
+export const appendAnimation = (file, end = false) => {
     if ($('.canvas-video').length == 0) {
         $('#canvas')[0].hidden = false;
         $('#canvas').append(`<video class="canvas-video" src="../static/animations/${file}" autoplay height="100%" width="100%"></video>`)
         $('.canvas-video')[0].onended = () => {
-            $('.canvas-video').remove();
-            $('#canvas')[0].hidden = true;
+            if (!end) {
+                $('.canvas-video').remove();
+                $('#canvas')[0].hidden = true;
+            } else {
+                window.location = 'home.html'
+            }
         };
     }
 }
@@ -394,9 +403,9 @@ export const attackComplete = (event) => {
             <div><h3 name="block-label">Block with:</h3><select id="shield" style="color: black; font-size: x-large;">
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">5</option>
-            <option value="5">7</option>
-            <option value="prime">Prime</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+            <option value="p">Prime</option>
         </select></div></div>`);
     } else {
         appendAnimation('Victory_1.mp4');
@@ -424,16 +433,14 @@ export const blockComplete = (event, game=null) => {
         if (!total[0]) {
             if (game.health <= 0) {
                 clearPreviousDom();
-                appendAnimation('Defeat.mp4');
-                window.location = 'home.html'
+                appendAnimation('Defeat.mp4', true);
             } else {
                 appendAnimation('Blocking_Fail.mp4');
             }
         } else {
             if (game.health <= 0) {
                 clearPreviousDom();
-                appendAnimation('Defeat.mp4');
-                window.location = 'home.html'
+                appendAnimation('Defeat.mp4', true);
             } else {
                 appendAnimation('Block_Success.mp4');
             }
@@ -454,6 +461,10 @@ export const blockComplete = (event, game=null) => {
 
 }
 
+export const leaveNow = (event) => {
+    $('#canvas')[0].hidden = true;
+}
+
 export const loadElementsintoDOM = (game) => {
     game.startGame();
     resestDomBoard(game);
@@ -466,6 +477,7 @@ export const loadElementsintoDOM = (game) => {
         $(document).on('click', '#round-comp', {game: game}, roundComplete);
         $(document).on('click', '#atk-comp', {game: game}, attackComplete);
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
+        $(document).on('click', '#canvas', leaveNow);
     }
 }
 
