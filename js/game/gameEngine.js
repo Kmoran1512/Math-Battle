@@ -322,6 +322,7 @@ export const clearBorders = (exclude = null) => {
 }
 
 export const buySellHandler = (event) => {
+
     let target = $(event.target);
     let side = $(event.target).attr('class').split(' ')[1];
     let color = '';
@@ -351,9 +352,45 @@ export const buySellHandler = (event) => {
     }
 }
 
-export const keyHandler = (event) => {
+export const readBoard = (controller, board) => {
+    let speak = '';
 
-    if (event.which == 51 && !$('#take-action')[0].disabled) { // 49, 50, 51, 48
+    if (controller != 'you') {
+        speak = `The ${controller} has: `;
+    } else {
+        speak = 'You have: '
+    }
+
+    let new_board = boardOrder(board, undefined)
+
+    let first = true
+    for (let i = 0; i < new_board.length; i++) {
+        if (new_board[i] != undefined) {
+
+            if (!first) {
+             speak += 'and '
+            } else {
+                first = false;
+            } 
+
+            speak += `a ${new_board[i].name} with ${new_board[i].atk} attack and ${new_board[i].health} health, `
+        }
+    }
+
+    readMessage(speak)
+}
+
+export const readMessage = (mes) => {
+    let utter = new SpeechSynthesisUtterance(mes)
+    speechSynthesis.speak(utter)
+}
+
+export const keyHandler = (event) => {
+    console.log(event.key)
+
+    let game = event.data.game
+
+    if ((event.key == 'd' || event.key == 'D') && !$('#take-action')[0].disabled) { // D key
         for (let i = ($('.buyable').length - 1); i >= 0; i--) {
             if ($($('.buyable')[i]).css('border-style') == 'solid') {
                 actionTaken(event);
@@ -364,7 +401,7 @@ export const keyHandler = (event) => {
                 actionTaken(event);
             }
         }
-    } else if (event.which == 50) {
+    } else if (event.key == 's' || event.key == 'S') { // S key
         if ($('#round-comp').length >= 1) {
             roundComplete(event);
         } else if ($('#atk-comp').length >= 1) {
@@ -372,17 +409,35 @@ export const keyHandler = (event) => {
         } else if ($('#def-comp').length >= 1) {
             blockComplete(event);
         }
-    } else if (event.which == 49 && !$('#refresh-recruit')[0].disabled) {
+    } else if ((event.key == 'a' || event.key == 'A') && !$('#refresh-recruit')[0].disabled) { // A key
         refreshRecruit(event);
-    } else if (event.which == 48) {
+    } else if (event.key == 'f' || event.key == 'F') { // F key
         levelUpHandler(event);
-    } else if (event.which == 13) {
+    } else if (event.key == 'Enter') { // Enter key
         if (!$('#canvas')[0].disabled) {
             leaveNow(event);
         }
         if ($(event.target).attr('class').split(' ')[0] == 'card-img') {
             buySellHandler(event)
         }
+    } else if (event.key == 'g' || event.key == 'G') { // G key
+        readBoard('you', game.my_board)
+    } else if (event.key == 'h' || event.key == 'H') { // H key
+
+        if (game.phase == 'Recruit') {
+            readBoard('Buyboard', game.buy_board)
+        } else {
+            readBoard('Opponent', game.opp_board)
+        }
+
+    } else if (event.key == 'j' || event.key == 'J') { // J key
+        readMessage('your level is: ' + game.level)
+    } else if (event.key == 'k' || event.key == 'K') { // K key
+        readMessage('You have: ' + game.coins + ' coins')
+    } else if (event.key == 'l' || event.key == 'L') { // L key
+        readMessage('You have: ' + game.health + ' health remaining')
+    } else if (event.key == 'i' || event.key == 'I') { // I key
+        readMessage('It is currently round:' + game.round)
     }
 }
 
@@ -458,7 +513,7 @@ export const attackComplete = (event) => {
     }
 }
 
-export const blockComplete = (event, game=null) => {
+export const blockComplete = (event, game = null) => {
     if (game == null) {
         game = event.data.game;
     }
@@ -512,6 +567,7 @@ export const leaveNow = (event) => {
 export const loadElementsintoDOM = (game) => {
     game.startGame();
     resestDomBoard(game);
+
     {    
         $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
         $(document).on('click', '.buyable', buySellHandler);
@@ -535,7 +591,5 @@ request.onload = function() {
     const data = request.response;
 
     var game = new Game(data)
-
-    console.log(data)
     loadElementsintoDOM(game);
 }
