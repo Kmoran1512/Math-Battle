@@ -377,6 +377,9 @@ export const keyHandler = (event) => {
     } else if (event.which == 48) {
         levelUpHandler(event);
     } else if (event.which == 13) {
+        if (!$('#canvas')[0].disabled) {
+            leaveNow(event);
+        }
         if ($(event.target).attr('class').split(' ')[0] == 'card-img') {
             buySellHandler(event)
         }
