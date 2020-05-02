@@ -109,6 +109,42 @@ export default class Game {
                 attacker.type == 'Grass' && defender.type == "Water";
     }
 
+    // Chris area
+
+    doAttacks(currentEnemy, mIndex, myMon, oIndex) {
+        let target1 = $('#' + "top-board" + oIndex).attr("alt");
+        let target2 = $('#' + "bottom-board" + mIndex).attr("alt");
+        console.log(target1 + " " + target2);
+        /*
+        let side = $(event.target).attr('class').split(' ')[1];
+        let color = '';
+
+        if (side == 'buyable') {
+            color = 'blue';
+        } else if (side == 'sellable') {
+            color = 'green';
+        }
+
+        if (target.css('border-style') == 'solid') {
+            target.css('border', '');
+            $('#take-action')[0].disabled = true;
+        } else {
+            clearBorders()
+            target.css({border: `${color} solid 3px`})
+            if (color == 'blue') {
+                console.log('buying')
+                $('#take-action')[0].innerHTML = 'Buy Minion'
+                $('#take-action')[0].setAttribute('aria-label', 'Buy Minion Button')
+            } else if (color == 'green') {
+                console.log('selling')
+                $('#take-action')[0].innerHTML = 'Sell Minion'
+                $('#take-action')[0].setAttribute('aria-label', 'Sell Minion Button')
+            }
+            $('#take-action')[0].disabled = false;
+        }
+         */
+    }
+
     commenceAtk() {
 
         var curr_board = [];
@@ -118,40 +154,104 @@ export default class Game {
 
         var defeated_arr = []
 
-        for (let i = 0; i < opp_board.length; i++) {
-            if (curr_board[i] != undefined) {
-                while (curr_board[i][1] > 0 && opp_board[i][1] > 0) {
-                    if (this.checkTypeAdvantage(this.opp_board[i], this.my_board[i])) {
-                        curr_board[i][1] = curr_board[i][1] - 2 * opp_board[i][0];
-                    } else {
-                        curr_board[i][1] = curr_board[i][1] - opp_board[i][0];
-                    }
+        let stages = 0;
+        if (opp_board.length > curr_board.length) {
+            stages = opp_board.length;
+        } else {
+            stages = curr_board.length;
+        }
+        let winner = "me";
+        let oIndex = 0;
+        let mIndex = 0;
+        let currentEnemy = this.opp_board[oIndex];
+        let currentMyMon = this.my_board[mIndex];
+        let currentEnemyHP = opp_board[oIndex][1];
+        let currentEnemyAtk = opp_board[oIndex][0];
+        let currentMyMonHP = curr_board[mIndex][1]
+        let currentMyMonAtk = curr_board[mIndex][0];
+        while (currentEnemy == undefined) {
+            oIndex++;
+            currentEnemy = opp_board[oIndex];
+            currentEnemyHP = opp_board[oIndex][1];
+            currentEnemyAtk = opp_board[oIndex][0];
+        }
+        while (currentMyMon == undefined) {
+            mIndex++;
+            currentMyMon = curr_board[mIndex];
+            currentMyMonHP = curr_board[mIndex][1]
+            currentMyMonAtk = curr_board[mIndex][0];
+        }
+        console.log(currentMyMon.health + currentEnemy.health);
 
-                    if (this.checkTypeAdvantage(this.my_board[i], this.opp_board[i])) {
-                        opp_board[i][1] = opp_board[i][1] - 2 * curr_board[i][0];
+        let stillFighting = true;
+        while (stillFighting) {
+            if (curr_board[0] != undefined) {
+                let adjIndex1 = mIndex + Math.ceil(( 7 - this.opp_board.length) / 2);
+                let adjIndex2 = oIndex + Math.ceil(( 7 - this.opp_board.length) / 2);
+                while (currentEnemyHP > 0 && currentMyMonHP > 0) {
+                    let dmg = 0;
+                    if (this.checkTypeAdvantage(currentEnemy, currentMyMon)) {
+                        dmg = 2 * currentEnemyAtk;
                     } else {
-                        opp_board[i][1] = opp_board[i][1] - curr_board[i][0];
+                        dmg = currentEnemyAtk;
                     }
+                    currentMyMonHP = currentMyMonHP - dmg;
+
+                    if (this.checkTypeAdvantage(currentEnemy, currentMyMon)) {
+                        dmg = 2 * currentMyMonAtk;
+                    } else {
+                        dmg = currentMyMonAtk;
+                    }
+                    currentEnemyHP = currentEnemyHP - dmg;
                 }
+                this.doAttacks(currentMyMon, adjIndex1, currentEnemy, adjIndex2);
             }
                         
-            if (opp_board[i][1] > 0) {
-                this.dmg += this.opp_board[i].lvl;
+            if (currentEnemy[1] > 0) {
+                mIndex++;
+                console.log(mIndex + " " + this.my_board.length);
+                if (mIndex >= this.my_board.length) {
+                    stillFighting = false;
+                    winner = "opp";
+                } else {
+                    currentMyMon = curr_board[mIndex];
+                    currentMyMonHP = curr_board[mIndex][1]
+                    currentMyMonAtk = curr_board[mIndex][0];
+                }
             } else {
-                defeated_arr.push(i);
+                defeated_arr.push(oIndex);
+                oIndex++;
+                console.log(oIndex + " " + this.opp_board.length);
+                if (oIndex >= this.opp_board.length) {
+                    stillFighting = false;
+                    winner = "me";
+                } else {
+                    currentEnemy = opp_board[oIndex];
+                    currentEnemyHP = opp_board[oIndex][1];
+                    currentEnemyAtk = opp_board[oIndex][0];
+                }
             }
-
+            console.log(oIndex + " " + mIndex);
+            if (oIndex > this.opp_board.length || mIndex > this.my_board.length) {
+                break;
+            }
         }
 
         for (let i = (defeated_arr.length - 1); i >= 0; i--) {
             this.opp_board.splice(defeated_arr[i], 1);
         }
 
-        if (this.dmg > 0) {
+        if (winner === "opp") {
+            console.log("Lost");
+            for (let i = 0; i < this.opp_board.length;i++) {
+                this.dmg += this.opp_board[i].lvl;
+            }
             this.dmg += this.opp_level;
         }
+        console.log(winner);
     }
 
+    // end
     commenceBlock(num) {
         var total_dmg = 0;
         var block = false;
@@ -242,7 +342,7 @@ export const drawBoard = (loc, arr, empty, classes, index = 1) => {
             $(loc).append(`<img class="card-img" src="${visual_board[i].img}" 
             alt="" height="70%" width="13%">`);
         } else {
-            $(loc).append(`<img class="card-img ${classes}" src="${visual_board[i].img}" 
+            $(loc).append(`<img class="card-img ${classes}" id="${loc}${i}" src="${visual_board[i].img}" 
             alt="${classes} ${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%" tabindex='${index}'>`);
             index += 1;    
         }
@@ -322,7 +422,6 @@ export const clearBorders = (exclude = null) => {
 }
 
 export const buySellHandler = (event) => {
-
     let target = $(event.target);
     let side = $(event.target).attr('class').split(' ')[1];
     let color = '';
@@ -352,45 +451,9 @@ export const buySellHandler = (event) => {
     }
 }
 
-export const readBoard = (controller, board) => {
-    let speak = '';
-
-    if (controller != 'you') {
-        speak = `The ${controller} has: `;
-    } else {
-        speak = 'You have: '
-    }
-
-    let new_board = boardOrder(board, undefined)
-
-    let first = true
-    for (let i = 0; i < new_board.length; i++) {
-        if (new_board[i] != undefined) {
-
-            if (!first) {
-             speak += 'and '
-            } else {
-                first = false;
-            } 
-
-            speak += `a ${new_board[i].name} with ${new_board[i].atk} attack and ${new_board[i].health} health, `
-        }
-    }
-
-    readMessage(speak)
-}
-
-export const readMessage = (mes) => {
-    let utter = new SpeechSynthesisUtterance(mes)
-    speechSynthesis.speak(utter)
-}
-
 export const keyHandler = (event) => {
-    console.log(event.key)
 
-    let game = event.data.game
-
-    if ((event.key == 'd' || event.key == 'D') && !$('#take-action')[0].disabled) { // D key
+    if (event.which == 51 && !$('#take-action')[0].disabled) { // 49, 50, 51, 48
         for (let i = ($('.buyable').length - 1); i >= 0; i--) {
             if ($($('.buyable')[i]).css('border-style') == 'solid') {
                 actionTaken(event);
@@ -401,7 +464,7 @@ export const keyHandler = (event) => {
                 actionTaken(event);
             }
         }
-    } else if (event.key == 's' || event.key == 'S') { // S key
+    } else if (event.which == 50) {
         if ($('#round-comp').length >= 1) {
             roundComplete(event);
         } else if ($('#atk-comp').length >= 1) {
@@ -409,35 +472,17 @@ export const keyHandler = (event) => {
         } else if ($('#def-comp').length >= 1) {
             blockComplete(event);
         }
-    } else if ((event.key == 'a' || event.key == 'A') && !$('#refresh-recruit')[0].disabled) { // A key
+    } else if (event.which == 49 && !$('#refresh-recruit')[0].disabled) {
         refreshRecruit(event);
-    } else if (event.key == 'f' || event.key == 'F') { // F key
+    } else if (event.which == 48) {
         levelUpHandler(event);
-    } else if (event.key == 'Enter') { // Enter key
+    } else if (event.which == 13) {
         if (!$('#canvas')[0].disabled) {
             leaveNow(event);
         }
         if ($(event.target).attr('class').split(' ')[0] == 'card-img') {
             buySellHandler(event)
         }
-    } else if (event.key == 'g' || event.key == 'G') { // G key
-        readBoard('you', game.my_board)
-    } else if (event.key == 'h' || event.key == 'H') { // H key
-
-        if (game.phase == 'Recruit') {
-            readBoard('Buyboard', game.buy_board)
-        } else {
-            readBoard('Opponent', game.opp_board)
-        }
-
-    } else if (event.key == 'j' || event.key == 'J') { // J key
-        readMessage('your level is: ' + game.level)
-    } else if (event.key == 'k' || event.key == 'K') { // K key
-        readMessage('You have: ' + game.coins + ' coins')
-    } else if (event.key == 'l' || event.key == 'L') { // L key
-        readMessage('You have: ' + game.health + ' health remaining')
-    } else if (event.key == 'i' || event.key == 'I') { // I key
-        readMessage('It is currently round:' + game.round)
     }
 }
 
@@ -513,7 +558,7 @@ export const attackComplete = (event) => {
     }
 }
 
-export const blockComplete = (event, game = null) => {
+export const blockComplete = (event, game=null) => {
     if (game == null) {
         game = event.data.game;
     }
@@ -567,7 +612,6 @@ export const leaveNow = (event) => {
 export const loadElementsintoDOM = (game) => {
     game.startGame();
     resestDomBoard(game);
-
     {    
         $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
         $(document).on('click', '.buyable', buySellHandler);
@@ -591,5 +635,7 @@ request.onload = function() {
     const data = request.response;
 
     var game = new Game(data)
+
+    console.log(data)
     loadElementsintoDOM(game);
 }
