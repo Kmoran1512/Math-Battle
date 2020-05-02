@@ -322,23 +322,64 @@ export const clearBorders = (exclude = null) => {
 }
 
 export const buySellHandler = (event) => {
+    let target = $(event.target);
+    let side = $(event.target).attr('class').split(' ')[1];
+    let color = '';
 
-    if ($(event.target).css('border-style') == 'solid') {
-        $(event.target).css('border', '');
+    if (side == 'buyable') {
+        color = 'blue';
+    } else if (side == 'sellable') {
+        color = 'green';
+    }
+
+    if (target.css('border-style') == 'solid') {
+        target.css('border', '');
         $('#take-action')[0].disabled = true;
     } else {
         clearBorders()
-        $(event.target).css({border: `${event.data.color} solid 3px`})
-        if (event.data.color == 'blue') {
+        target.css({border: `${color} solid 3px`})
+        if (color == 'blue') {
             console.log('buying')
             $('#take-action')[0].innerHTML = 'Buy Minion'
             $('#take-action')[0].setAttribute('aria-label', 'Buy Minion Button')
-        } else if (event.data.color == 'green') {
+        } else if (color == 'green') {
             console.log('selling')
             $('#take-action')[0].innerHTML = 'Sell Minion'
             $('#take-action')[0].setAttribute('aria-label', 'Sell Minion Button')
         }
         $('#take-action')[0].disabled = false;
+    }
+}
+
+export const keyHandler = (event) => {
+
+    if (event.which == 51 && !$('#take-action')[0].disabled) { // 49, 50, 51, 48
+        for (let i = ($('.buyable').length - 1); i >= 0; i--) {
+            if ($($('.buyable')[i]).css('border-style') == 'solid') {
+                actionTaken(event);
+            }
+        }
+        for (let i = ($('.sellable').length - 1); i >= 0; i--) {
+            if ($($('.sellable')[i]).css('border-style') == 'solid') {
+                actionTaken(event);
+            }
+        }
+    } else if (event.which == 50) {
+        if ($('#round-comp').length >= 1) {
+            roundComplete(event);
+        } else if ($('#atk-comp').length >= 1) {
+            attackComplete(event);
+        } else if ($('#def-comp').length >= 1) {
+            blockComplete(event);
+        }
+    } else if (event.which == 49 && !$('#refresh-recruit')[0].disabled) {
+        refreshRecruit(event);
+    } else if (event.which == 48) {
+        levelUpHandler(event);
+    } else if (event.which == 13) {
+        if ($(event.target).attr('class').split(' ')[0] == 'card-img') {
+            buySellHandler(event)
+        }
     }
 }
 
@@ -470,14 +511,15 @@ export const loadElementsintoDOM = (game) => {
     resestDomBoard(game);
     {    
         $(document).on('click', '#lvl-up', {game: game}, levelUpHandler);
-        $(document).on('click', '.buyable', {color: 'blue'}, buySellHandler);
-        $(document).on('click', '.sellable', {color: 'green'}, buySellHandler);
+        $(document).on('click', '.buyable', buySellHandler);
+        $(document).on('click', '.sellable', buySellHandler);
         $(document).on('click', '#take-action', {game: game}, actionTaken);
         $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit);
         $(document).on('click', '#round-comp', {game: game}, roundComplete);
         $(document).on('click', '#atk-comp', {game: game}, attackComplete);
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
         $(document).on('click', '#canvas', leaveNow);
+        $(document).on('keypress', {game: game}, keyHandler)
     }
 }
 
