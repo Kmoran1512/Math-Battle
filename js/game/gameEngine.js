@@ -504,7 +504,7 @@ export const drawMinHealth = (game) => {
     }
 }
 
-export const handleFights = async (game) => {
+export const handleFights = (game) => {
     let result = game.singleAttack();
 
     if (result == undefined) {
@@ -570,6 +570,7 @@ export const roundComplete = async (event) => {
     while (exit) {
         await new Promise(r => setTimeout(r, 1000));
         exit = handleFights(game)
+        console.log(exit)
     }
     
     attackComplete(game)
