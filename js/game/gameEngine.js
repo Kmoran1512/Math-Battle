@@ -497,6 +497,10 @@ export const keyHandler = async (event) => {
 export const actionTaken = async (event) => {
     var game = event.data.game;
 
+    $('#refresh-recruit')[0].disabled = true;
+    $('#round-comp')[0].disabled = true;
+    $('#take-action')[0].disabled = true;
+
     for (let i = ($('.buyable').length - 1); i >= 0; i--) {
         if ($($('.buyable')[i]).css('border-style') == 'solid') {
             await readMessage(`Minion purchased`)
