@@ -57,7 +57,7 @@ Link to the Pages: https://kmoran1512.github.io/Math-Battle/
 
   + Enter Key: Selects the minion that has been highlighted by the tab key.
   + A. Key: During the Recruit phase this hot-key will refresh the buy-board.
-  + S. Key: Progresses to the next phase, this can be used during the Recruit phase after you are done buying and selling minions and refreshing the buy-board, and this can be used in the Block phase after you have selected a sheild.
+  + S. Key: Progresses to the next phase, this can be used during the Recruit phase after you are done buying and selling minions and refreshing the buy-board, and this can be used in the Block phase after you have selected a shield.
   + D. Key: During the Recruit phase when a minion is selected either by using the Enter hot-key or by using a mouse this hot-key will either sell or buy a minions depending on if you control it or if it is in the buy-board.
   + F. Key: During the Recruit phase if you have four coins pressing this hot-key will level you up then read out your new level.
   + G. Key: During the Recruit phase this hot-key will read out what minions you have on your board.
