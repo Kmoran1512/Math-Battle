@@ -1,4 +1,4 @@
-let key_down = false
+let key_down = 0
 
 export default class Game {
     constructor(data, health = 40, round = 1, level = 1, coins = 3, dmg = 0, opp_level = 1, phase="Recruit") {
@@ -308,18 +308,29 @@ export const resestDomBoard = (game) => {
 
 }
 
-export const refreshRecruit = (event) => {
+export const refreshRecruit = async (event) => {
     var game = event.data.game;
 
-    game.refreshButton();
-    resestDomBoard(game);
+    if (game.coins < 1) {
+        await readMessage(`you have no coins, you need 1 to refresh the buyboard`)
+    } else {
+        await readMessage(`buyboard refreshed`)
+        game.refreshButton();
+        resestDomBoard(game)
+    }
 }
 
-export const levelUpHandler = (event) => {
+export const levelUpHandler = async (event) => {
     var game = event.data.game
 
-    game.levelUp()
-    resestDomBoard(game)
+    if (game.coins < 4) {
+        await readMessage(`you have ${game.coins} coins, you need 4 to level up`)
+    } else {
+        game.levelUp()
+        resestDomBoard(game)
+        await readMessage(`you leveled up to level ${game.level}`)
+    }
+    
 }
 
 export const clearBorders = (exclude = null) => {
@@ -414,25 +425,28 @@ export const keyHandler = async (event) => {
         return
     } else if (!event.ctrlKey || !event.altKey) {
         return
-    } else if (key_down) {
+    } else if (key_down != 0) {
         return
     }
 
-    key_down = true;
+    key_down = 1;
 
     console.log(key_down)
 
     if ((event.key == 'd' || event.key == 'D')) { // D key
-        for (let i = ($('.buyable').length - 1); i >= 0; i--) {
-            if ($($('.buyable')[i]).css('border-style') == 'solid') {
-                actionTaken(event);
+        let breaker = false;
+        for (let i = ($('.card-img').length - 1); i >= 0; i--) {
+            if ($($('.card-img')[i]).css('border-style') != 'none') {
+                breaker = true;
             }
         }
-        for (let i = ($('.sellable').length - 1); i >= 0; i--) {
-            if ($($('.sellable')[i]).css('border-style') == 'solid') {
-                actionTaken(event);
-            }
+
+        if (breaker) {
+            await actionTaken(event);
+        } else {
+            await readMessage(`No action taken, no minions are selected`)
         }
+
     } else if (event.key == 's' || event.key == 'S') { // S key
         if ($('#round-comp').length >= 1) {
             roundComplete(event);
@@ -441,10 +455,10 @@ export const keyHandler = async (event) => {
         } else if ($('#def-comp').length >= 1) {
             blockComplete(event);
         }
-    } else if ((event.key == 'a' || event.key == 'A') && !$('#refresh-recruit')[0].disabled) { // A key
-        refreshRecruit(event);
+    } else if ((event.key == 'a' || event.key == 'A')) { // A key
+        await refreshRecruit(event);
     } else if (event.key == 'f' || event.key == 'F') { // F key
-        levelUpHandler(event);
+        await levelUpHandler(event);
     } else if (event.key == 'Enter') { // Enter key
         if (!$('#canvas')[0].disabled) {
             leaveNow(event);
@@ -476,21 +490,23 @@ export const keyHandler = async (event) => {
             selected minion, "F" levels you up, "G" reads out your board, "H" reads out your opponents board, "J" reads out your level, "K" reads out how many coins you have, "L" 
             reads your health, "I" reads out the round, and "B" reads this menu again.`)
     }
-
-    key_down = false;
+    
+    key_down = 2;
 }
 
-export const actionTaken = (event) => {
+export const actionTaken = async (event) => {
     var game = event.data.game;
 
     for (let i = ($('.buyable').length - 1); i >= 0; i--) {
         if ($($('.buyable')[i]).css('border-style') == 'solid') {
+            await readMessage(`Minion purchased`)
             $('audio#buy-sound')[0].play()
             game.purchase($('.buyable')[i].alt.replace('buyable ', '').split(":")[0]);
         }
     }
     for (let i = ($('.sellable').length - 1); i >= 0; i--) {
         if ($($('.sellable')[i]).css('border-style') == 'solid') {
+            await readMessage(`Minion sold`)
             $('audio#sold-sound')[0].play()
             game.sellMinion($('.sellable')[i].alt.replace('sellable ', '').split(":")[0]);
         }
@@ -695,6 +711,11 @@ export const loadElementsintoDOM = (game) => {
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
         $(document).on('click', '#canvas', leaveNow);
         $(document).on('keydown', {game: game}, keyHandler)
+        $(document).on('keyup', {game: game}, function() {
+            if (key_down == 2) {
+                key_down = 0;
+            }
+        });
     }
 }
 
