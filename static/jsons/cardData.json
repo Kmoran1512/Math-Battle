@@ -50,7 +50,7 @@
         "type": "Fire"
     }, {
         "id": 6,
-        "name": "Salamander",
+        "name": "Fire Salamander",
         "atk": 7,
         "health": 6,
         "img": "../static/images/cards/fire/Salamander_card.png",
@@ -82,7 +82,7 @@
         "type": "Fire"
     }, {
         "id": 10,
-        "name": "Flame Wheel",
+        "name": "Burning Wheel",
         "atk": 14,
         "health": 10,
         "img": "../static/images/cards/fire/Burning_Wheel_Card.png",
@@ -90,7 +90,7 @@
         "type": "Fire"
     }, {
         "id": 11,
-        "name": "Flaming Bull",
+        "name": "Flame Bull",
         "atk": 16,
         "health": 11,
         "img": "../static/images/cards/fire/Flame_Bull_Card.png",
@@ -131,7 +131,7 @@
         "type": "Grass"
     }, {
         "id": 2,
-        "name": "Pixie",
+        "name": "Fairy",
         "atk": 3,
         "health": 3,
         "img": "../static/images/cards/grass/Fairy_Card.png",
@@ -227,7 +227,7 @@
         "type": "Grass"
     }, {
         "id": 14,
-        "name": "9-Tailed Fox",
+        "name": "Nine Tailed Fox",
         "atk": 15,
         "health": 15,
         "img": "../static/images/cards/grass/Nine_Tail_Fox_Card.png",
@@ -260,7 +260,7 @@
         "type": "Water"
     }, {
         "id": 4,
-        "name": "Flying Frod",
+        "name": "Flying Frog",
         "atk": 4,
         "health": 5,
         "img": "../static/images/cards/water/Flying_Frog_Card.png",
@@ -268,7 +268,7 @@
         "type": "Water"
     }, {
         "id": 5,
-        "name": "Kelp Horse",
+        "name": "Kelpie Horse",
         "atk": 5,
         "health": 6,
         "img": "../static/images/cards/water/Kelp_Horse_Card.png",
