@@ -151,3 +151,18 @@ const pageLoaded = () => {
     }
 
 }
+
+{
+    $(document).on('click', '#btn-go-to-game', async (event) => {
+        let utter = `The hot keys are: Tab will move focus over the minions, and a screen reader will read out the minion with focus, Enter will select a focused minion,
+            A refreshes the buyboard, S ends the buy phase or block phase, D buys or sells a selected minion, F levels you up, G reads out your board, 
+            H reads out your opponents board, J reads out your level, K reads out how many coins you have, L reads your health, I reads out the round, and B reads this menu again.`;
+
+        utter = new SpeechSynthesisUtterance(utter);
+        speechSynthesis.speak(utter);
+
+        return new Promise(resolve => {
+            utter.onend = resolve;
+        });
+    });
+}
