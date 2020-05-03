@@ -458,6 +458,10 @@ export const keyHandler = async (event) => {
         await readMessage('You have: ' + game.health + ' health remaining')
     } else if (event.key == 'i' || event.key == 'I') { // I key
         await readMessage('It is currently round:' + game.round)
+    } else if (event.key == 'b' || event.key == 'B') { // B key
+        await readMessage(`The hot keys are: Tab will move focus over the minions, and a screen reader will read out the minion with focus, Enter will select a focused minion,
+            A refreshes the buyboard, S ends the buy phase or block phase, D buys or sells a selected minion, F levels you up, G reads out your board, 
+            H reads out your opponents board, J reads out your level, K reads out how many coins you have, L reads your health, I reads out the round, and B reads this menu again.`)
     }
 }
 
