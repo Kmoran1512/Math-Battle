@@ -10,6 +10,8 @@ export default class Game {
         this.opp_level = opp_level
         this.phase = phase;
         this.my_board = [];
+        this.my_fight_board = [];
+        this.op_fight_board = [];
         this.buy_board = [];
         this.opp_board = [];
     }
@@ -109,149 +111,58 @@ export default class Game {
                 attacker.type == 'Grass' && defender.type == "Water";
     }
 
-    // Chris area
-
-    doAttacks(currentEnemy, mIndex, myMon, oIndex) {
-        let target1 = $('#' + "top-board" + oIndex).attr("alt");
-        let target2 = $('#' + "bottom-board" + mIndex).attr("alt");
-        console.log(target1 + " " + target2);
-        /*
-        let side = $(event.target).attr('class').split(' ')[1];
-        let color = '';
-
-        if (side == 'buyable') {
-            color = 'blue';
-        } else if (side == 'sellable') {
-            color = 'green';
-        }
-
-        if (target.css('border-style') == 'solid') {
-            target.css('border', '');
-            $('#take-action')[0].disabled = true;
-        } else {
-            clearBorders()
-            target.css({border: `${color} solid 3px`})
-            if (color == 'blue') {
-                console.log('buying')
-                $('#take-action')[0].innerHTML = 'Buy Minion'
-                $('#take-action')[0].setAttribute('aria-label', 'Buy Minion Button')
-            } else if (color == 'green') {
-                console.log('selling')
-                $('#take-action')[0].innerHTML = 'Sell Minion'
-                $('#take-action')[0].setAttribute('aria-label', 'Sell Minion Button')
+    getLargestMinionMod2(arr) {
+        for (let i = 6; i >= 0; i -= 2) {
+            if (arr.length > i) {
+                if (arr[i] != undefined) {
+                    return i;
+                }
             }
-            $('#take-action')[0].disabled = false;
         }
-         */
+        for (let i = 1; i < 6; i += 2) {
+            if (arr.length > i) {
+                if (arr[i] != undefined) {
+                    return i;
+                }
+            }
+        }
+        return undefined
     }
 
-    commenceAtk() {
+    singleAttack() {
+        let my_minion = this.my_fight_board[this.getLargestMinionMod2(this.my_fight_board)];
+        let op_minion = this.op_fight_board[this.getLargestMinionMod2(this.op_fight_board)];
 
-        var curr_board = [];
-        this.my_board.forEach(e => {curr_board.push([e.atk, e.health])});
-        var opp_board = [];
-        this.opp_board.forEach(e => {opp_board.push([e.atk, e.health])});
+        if (my_minion == undefined || op_minion == undefined) {
+            return undefined;
+        }
 
-        var defeated_arr = []
-
-        let stages = 0;
-        if (opp_board.length > curr_board.length) {
-            stages = opp_board.length;
+        if (this.checkTypeAdvantage(op_minion, my_minion)) {
+            my_minion.health = my_minion.health - 2 * op_minion.atk
+            op_minion.health = op_minion.health - my_minion.atk
+        } else if (this.checkTypeAdvantage(my_minion, op_minion)) {
+            op_minion.health = op_minion.health - 2 * my_minion.atk
+            my_minion.health = my_minion.health - op_minion.atk
         } else {
-            stages = curr_board.length;
-        }
-        let winner = "me";
-        let oIndex = 0;
-        let mIndex = 0;
-        let currentEnemy = this.opp_board[oIndex];
-        let currentMyMon = this.my_board[mIndex];
-        let currentEnemyHP = opp_board[oIndex][1];
-        let currentEnemyAtk = opp_board[oIndex][0];
-        let currentMyMonHP = curr_board[mIndex][1]
-        let currentMyMonAtk = curr_board[mIndex][0];
-        while (currentEnemy == undefined) {
-            oIndex++;
-            currentEnemy = opp_board[oIndex];
-            currentEnemyHP = opp_board[oIndex][1];
-            currentEnemyAtk = opp_board[oIndex][0];
-        }
-        while (currentMyMon == undefined) {
-            mIndex++;
-            currentMyMon = curr_board[mIndex];
-            currentMyMonHP = curr_board[mIndex][1]
-            currentMyMonAtk = curr_board[mIndex][0];
-        }
-        console.log(currentMyMon.health + currentEnemy.health);
-
-        let stillFighting = true;
-        while (stillFighting) {
-            if (curr_board[0] != undefined) {
-                let adjIndex1 = mIndex + Math.ceil(( 7 - this.opp_board.length) / 2);
-                let adjIndex2 = oIndex + Math.ceil(( 7 - this.opp_board.length) / 2);
-                while (currentEnemyHP > 0 && currentMyMonHP > 0) {
-                    let dmg = 0;
-                    if (this.checkTypeAdvantage(currentEnemy, currentMyMon)) {
-                        dmg = 2 * currentEnemyAtk;
-                    } else {
-                        dmg = currentEnemyAtk;
-                    }
-                    currentMyMonHP = currentMyMonHP - dmg;
-
-                    if (this.checkTypeAdvantage(currentEnemy, currentMyMon)) {
-                        dmg = 2 * currentMyMonAtk;
-                    } else {
-                        dmg = currentMyMonAtk;
-                    }
-                    currentEnemyHP = currentEnemyHP - dmg;
-                }
-                this.doAttacks(currentMyMon, adjIndex1, currentEnemy, adjIndex2);
-            }
-                        
-            if (currentEnemy[1] > 0) {
-                mIndex++;
-                console.log(mIndex + " " + this.my_board.length);
-                if (mIndex >= this.my_board.length) {
-                    stillFighting = false;
-                    winner = "opp";
-                } else {
-                    currentMyMon = curr_board[mIndex];
-                    currentMyMonHP = curr_board[mIndex][1]
-                    currentMyMonAtk = curr_board[mIndex][0];
-                }
-            } else {
-                defeated_arr.push(oIndex);
-                oIndex++;
-                console.log(oIndex + " " + this.opp_board.length);
-                if (oIndex >= this.opp_board.length) {
-                    stillFighting = false;
-                    winner = "me";
-                } else {
-                    currentEnemy = opp_board[oIndex];
-                    currentEnemyHP = opp_board[oIndex][1];
-                    currentEnemyAtk = opp_board[oIndex][0];
-                }
-            }
-            console.log(oIndex + " " + mIndex);
-            if (oIndex > this.opp_board.length || mIndex > this.my_board.length) {
-                break;
-            }
-        }
-
-        for (let i = (defeated_arr.length - 1); i >= 0; i--) {
-            this.opp_board.splice(defeated_arr[i], 1);
-        }
-
-        if (winner === "opp") {
-            console.log("Lost");
-            for (let i = 0; i < this.opp_board.length;i++) {
-                this.dmg += this.opp_board[i].lvl;
-            }
-            this.dmg += this.opp_level;
-        }
-        console.log(winner);
+            op_minion.health = op_minion.health - my_minion.atk
+            my_minion.health = my_minion.health - op_minion.atk
+        }        
+        
+        console.log([my_minion, op_minion])
+        return [my_minion, op_minion]
     }
 
-    // end
+    checkAtk() {
+        for (let i = 0; i < this.op_fight_board.length; i++) {
+            if (this.op_fight_board[i] != undefined) {
+                this.dmg += this.op_fight_board[i].lvl;
+            }            
+        }
+        if (this.dmg > 0) {
+            this.dmg += this.opp_level
+        }
+    }
+
     commenceBlock(num) {
         var total_dmg = 0;
         var block = false;
@@ -298,7 +209,7 @@ export default class Game {
     }
 }
 
-export const appendAnimation = (file, end = false) => {
+export const appendAnimation = async (file, end = false) => {
     if ($('.canvas-video').length == 0) {
         $('#canvas')[0].hidden = false;
         $('#canvas').append(`<video class="canvas-video" src="../static/animations/${file}" autoplay height="100%" width="100%"></video>`)
@@ -315,6 +226,7 @@ export const appendAnimation = (file, end = false) => {
 
 export const clearPreviousDom = () => {
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
+    for (let i = ($('.minion-bar').length - 1); i >= 0; i--) {$('.minion-bar')[i].remove();}    
     for (let i = ($('.health-bar').length - 1); i >= 0; i--) { $('.health-bar')[i].remove();}
     for (let i = ($('.coin-img').length - 1); i >= 0; i--) { $('.coin-img')[i].remove();}
 }
@@ -342,7 +254,7 @@ export const drawBoard = (loc, arr, empty, classes, index = 1) => {
             $(loc).append(`<img class="card-img" src="${visual_board[i].img}" 
             alt="" height="70%" width="13%">`);
         } else {
-            $(loc).append(`<img class="card-img ${classes}" id="${loc}${i}" src="${visual_board[i].img}" 
+            $(loc).append(`<img class="card-img ${classes}" src="${visual_board[i].img}" 
             alt="${classes} ${visual_board[i].name}: attack ${visual_board[i].atk}, health ${visual_board[i].health}" height="70%" width="13%" tabindex='${index}'>`);
             index += 1;    
         }
@@ -451,9 +363,45 @@ export const buySellHandler = (event) => {
     }
 }
 
-export const keyHandler = (event) => {
+export const readBoard = (controller, board) => {
+    let speak = '';
 
-    if (event.which == 51 && !$('#take-action')[0].disabled) { // 49, 50, 51, 48
+    if (controller != 'you') {
+        speak = `The ${controller} has: `;
+    } else {
+        speak = 'You have: '
+    }
+
+    let new_board = boardOrder(board, undefined)
+
+    let first = true
+    for (let i = 0; i < new_board.length; i++) {
+        if (new_board[i] != undefined) {
+
+            if (!first) {
+             speak += 'and '
+            } else {
+                first = false;
+            } 
+
+            speak += `a ${new_board[i].name} with ${new_board[i].atk} attack and ${new_board[i].health} health, `
+        }
+    }
+
+    readMessage(speak)
+}
+
+export const readMessage = (mes) => {
+    let utter = new SpeechSynthesisUtterance(mes)
+    speechSynthesis.speak(utter)
+}
+
+export const keyHandler = (event) => {
+    console.log(event.key)
+
+    let game = event.data.game
+
+    if ((event.key == 'd' || event.key == 'D') && !$('#take-action')[0].disabled) { // D key
         for (let i = ($('.buyable').length - 1); i >= 0; i--) {
             if ($($('.buyable')[i]).css('border-style') == 'solid') {
                 actionTaken(event);
@@ -464,7 +412,7 @@ export const keyHandler = (event) => {
                 actionTaken(event);
             }
         }
-    } else if (event.which == 50) {
+    } else if (event.key == 's' || event.key == 'S') { // S key
         if ($('#round-comp').length >= 1) {
             roundComplete(event);
         } else if ($('#atk-comp').length >= 1) {
@@ -472,17 +420,35 @@ export const keyHandler = (event) => {
         } else if ($('#def-comp').length >= 1) {
             blockComplete(event);
         }
-    } else if (event.which == 49 && !$('#refresh-recruit')[0].disabled) {
+    } else if ((event.key == 'a' || event.key == 'A') && !$('#refresh-recruit')[0].disabled) { // A key
         refreshRecruit(event);
-    } else if (event.which == 48) {
+    } else if (event.key == 'f' || event.key == 'F') { // F key
         levelUpHandler(event);
-    } else if (event.which == 13) {
+    } else if (event.key == 'Enter') { // Enter key
         if (!$('#canvas')[0].disabled) {
             leaveNow(event);
         }
         if ($(event.target).attr('class').split(' ')[0] == 'card-img') {
             buySellHandler(event)
         }
+    } else if (event.key == 'g' || event.key == 'G') { // G key
+        readBoard('you', game.my_board)
+    } else if (event.key == 'h' || event.key == 'H') { // H key
+
+        if (game.phase == 'Recruit') {
+            readBoard('Buyboard', game.buy_board)
+        } else {
+            readBoard('Opponent', game.opp_board)
+        }
+
+    } else if (event.key == 'j' || event.key == 'J') { // J key
+        readMessage('your level is: ' + game.level)
+    } else if (event.key == 'k' || event.key == 'K') { // K key
+        readMessage('You have: ' + game.coins + ' coins')
+    } else if (event.key == 'l' || event.key == 'L') { // L key
+        readMessage('You have: ' + game.health + ' health remaining')
+    } else if (event.key == 'i' || event.key == 'I') { // I key
+        readMessage('It is currently round:' + game.round)
     }
 }
 
@@ -505,7 +471,64 @@ export const actionTaken = (event) => {
     resestDomBoard(game)
 }
 
-export const roundComplete = (event) => {
+export const drawMinHealth = (game) => {
+    for (let i = ($('.minion-bar').length - 1); i >= 0; i--) {$('.minion-bar')[i].remove();}    
+
+    let orig_top = boardOrder(game.opp_board);
+    let orig_bot = boardOrder(game.my_board);
+
+    let bot_bar = boardOrder(game.my_fight_board);
+    let top_bar = boardOrder(game.op_fight_board);
+
+    for (let i = 0; i < top_bar.length; i++) {
+        if (top_bar[i] != undefined) {
+            console.log(orig_top[i].health)
+            for (let j = 0; j < top_bar[i].health; j++) {
+                $('.top-min')[i].innerHTML += (`<div class="minion-bar" style="width: ${100 / orig_top[i].health}%;">&nbsp;</div>`)
+            }
+        }
+        
+    }
+
+    for (let i = 0; i < bot_bar.length; i++) {
+        if (bot_bar[i] != undefined) {
+            console.log(orig_bot[i].health)
+            for (let j = 0; j < bot_bar[i].health; j++) {
+                $('.bot-min')[i].innerHTML += (`<div class="minion-bar" style="width: ${100 / orig_bot[i].health}%;">&nbsp;</div>`)
+            }
+        }
+        
+    }
+}
+
+export const handleFights = (game) => {
+    let result = game.singleAttack();
+
+    if (result == undefined) {
+        console.log([game.my_fight_board, game.op_fight_board]);
+
+        for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
+        var index = drawBoard('#top-board', game.op_fight_board, game.data['None'][0], "opponent's");
+        index = drawBoard('#bottom-board', game.my_fight_board, game.data['None'][0], 'your', index);
+
+        return false;
+    }
+    if (result[0].health <= 0) {
+        game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)] = undefined;
+    }
+    if (result[1].health <= 0) {
+        game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)] = undefined;
+    }
+
+    drawMinHealth(game)
+    for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
+    var index = drawBoard('#top-board', game.op_fight_board, game.data['None'][0], "opponent's");
+    index = drawBoard('#bottom-board', game.my_fight_board, game.data['None'][0], 'your', index);
+
+    return !(game.op_fight_board.length == 0 || game.my_fight_board.length == 0);
+}
+
+export const roundComplete = async (event) => {
     var game = event.data.game;
     game.phase = "Attack";
 
@@ -521,14 +544,29 @@ export const roundComplete = (event) => {
     var index = drawBoard('#top-board', game.opp_board, game.data['None'][0], "opponent's")
     index = drawBoard('#bottom-board', game.my_board, game.data['None'][0], 'your', index)
 
-    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;" tabindex='${index}'>Complete Attack Phase</button>`)
+    $('#round-comp').replaceWith(`<button id="atk-comp" type="button" class="bottom-button" style="height: 100%; width: 50%;" tabindex='${index}' disabled>Complete Attack Phase</button>`)
     
-    game.commenceAtk();
+    game.my_fight_board = JSON.parse(JSON.stringify(game.my_board))
+    game.op_fight_board = JSON.parse(JSON.stringify(game.opp_board))
+
+    drawMinHealth(game)
+
+    await new Promise(r => setTimeout(r, 1000));
+
+    var exit = true
+
+    while (exit) {
+        await new Promise(r => setTimeout(r, 1000));
+        exit = handleFights(game)
+    }
+    
+    attackComplete(game)
 }
 
-export const attackComplete = (event) => {
-    var game = event.data.game;
-    game.phase = "Attack";
+export const attackComplete = async (game) => {
+    game.phase = "Block";
+
+    game.checkAtk()
 
     $('#Level')[0].innerHTML = `Level: ${game.level}`;
     $('#Phase')[0].innerHTML = `Block`;
@@ -536,7 +574,7 @@ export const attackComplete = (event) => {
 
     for (let i = ($('.card-img').length - 1); i >= 0; i--) {$('.card-img')[i].remove();}
 
-    var index = drawBoard('#top-board', game.opp_board, game.data['None'][0], 'surving')
+    var index = drawBoard('#top-board', game.op_fight_board, game.data['None'][0], 'surving')
 
     if (game.dmg > 0) {
         appendAnimation('Block_Phase.mp4');
@@ -553,8 +591,10 @@ export const attackComplete = (event) => {
         </select></div></div>`);
     } else {
         appendAnimation('Victory_1.mp4');
+        await new Promise(r => setTimeout(r, 1000));
 
-        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;" tabindex='${index}'>Begin Next Turn</button>`)
+        $('#atk-comp').replaceWith(`<button id="def-comp" class="bottom-button" type="button" style="height: 100%; width: 50%;" tabindex='${index}'> '' </button>`)
+        blockComplete(null, game)
     }
 }
 
@@ -619,7 +659,6 @@ export const loadElementsintoDOM = (game) => {
         $(document).on('click', '#take-action', {game: game}, actionTaken);
         $(document).on('click', '#refresh-recruit', {game: game}, refreshRecruit);
         $(document).on('click', '#round-comp', {game: game}, roundComplete);
-        $(document).on('click', '#atk-comp', {game: game}, attackComplete);
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
         $(document).on('click', '#canvas', leaveNow);
         $(document).on('keypress', {game: game}, keyHandler)
@@ -636,6 +675,5 @@ request.onload = function() {
 
     var game = new Game(data)
 
-    console.log(data)
     loadElementsintoDOM(game);
 }

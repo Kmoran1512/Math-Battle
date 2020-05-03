@@ -195,7 +195,7 @@
         "type": "Grass"
     }, {
         "id": 10,
-        "name": "W1ndigo",
+        "name": "Windigo",
         "atk": 11,
         "health": 11,
         "img": "../static/images/cards/grass/Windigo_Card.png",

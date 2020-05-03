@@ -119,6 +119,11 @@
     border: gray 5px solid;
 }
 
+.minion-bar {
+    background-color: green; 
+    float: left;
+}
+
 #Phase {
     left: 30%;
     height: auto;
