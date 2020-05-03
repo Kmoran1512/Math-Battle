@@ -548,6 +548,8 @@ export const drawMinHealth = (game) => {
 export const handleFights = (game) => {
     let result = game.singleAttack();
 
+    $('audio#attack-sound')[0].play()
+
     if (result == undefined) {
         console.log([game.my_fight_board, game.op_fight_board]);
 
