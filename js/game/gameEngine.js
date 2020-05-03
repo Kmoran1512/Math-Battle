@@ -374,6 +374,8 @@ export const readBoard = async (controller, board) => {
 
     let new_board = boardOrder(board, undefined)
 
+
+
     let first = true
     for (let i = 0; i < new_board.length; i++) {
         if (new_board[i] != undefined) {
@@ -386,6 +388,10 @@ export const readBoard = async (controller, board) => {
 
             speak += `a ${new_board[i].name} with ${new_board[i].atk} attack and ${new_board[i].health} health, `
         }
+    }
+
+    if (speak.split(' ').length <= 4) {
+        speak += 'nothing.'
     }
 
     return readMessage(speak)
@@ -518,13 +524,9 @@ export const handleFights = (game) => {
     }
     if (result[0].health <= 0) {
 
-        //await readMessage(`You lost a ${game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)].name}`)
-
         game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)] = undefined;
     }
     if (result[1].health <= 0) {
-
-        //await readMessage(`Your opponent lost a ${game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)].name}`)
 
         game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)] = undefined;
     }
@@ -562,13 +564,12 @@ export const roundComplete = async (event) => {
 
     await new Promise(r => setTimeout(r, 1500));
 
-    await readBoard('opponent', game.op_fight_board)
-    await readBoard('you', game.my_fight_board)
 
     var exit = true
 
     while (exit) {
-        await new Promise(r => setTimeout(r, 1000));
+        await readBoard('opponent', game.op_fight_board)
+        await readBoard('you', game.my_fight_board)    
         exit = handleFights(game)
         console.log(exit)
     }
