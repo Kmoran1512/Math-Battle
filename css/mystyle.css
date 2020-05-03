@@ -10,7 +10,7 @@
 }
 
 #bottom-board {
-    height: 32%; 
+    height: 24%; 
     width: 72%; 
     left: 14%; 
     position: absolute; 
@@ -27,6 +27,15 @@
     color: white;
 }
 
+#bottom-health {
+    height: 3.3%; 
+    width: 72%; 
+    left: 14.65%; 
+    position: absolute; 
+    top: 79%;
+    text-align: center;
+}
+
 #canvas {
     position: absolute; 
     height: 50vh; 
@@ -38,6 +47,8 @@
 
 .card-img {
     margin: .5%;
+    height: 95%;
+    width: 13%;
 }
 
 #coins {
@@ -76,6 +87,14 @@
     height:  6%;
 }
 
+.hp-num {
+    float: left;
+    height: 100%;
+    width: 13%;
+    margin: .5%;
+    border: black solid 2px;
+}
+
 .image {
     position: relative;
 }
@@ -98,6 +117,11 @@
     height: 200px;
     width: 150px;
     border: gray 5px solid;
+}
+
+.minion-bar {
+    background-color: green; 
+    float: left;
 }
 
 #Phase {
@@ -150,7 +174,7 @@ td a:hover {
 }
 
 #top-board {
-    height: 32%; 
+    height: 24%; 
     width: 72%; 
     left: 14%; 
     position: absolute; 
@@ -162,4 +186,13 @@ td a:hover {
     top: 0%; 
     height: 15%; 
     position: relative;
+}
+
+#top-health {
+    height: 3.3%; 
+    width: 72%; 
+    left: 14.65%; 
+    position: absolute; 
+    top: 47%;
+    text-align: center;
 }
