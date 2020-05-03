@@ -363,7 +363,7 @@ export const buySellHandler = (event) => {
     }
 }
 
-export const readBoard = (controller, board) => {
+export const readBoard = async (controller, board) => {
     let speak = '';
 
     if (controller != 'you') {
@@ -388,15 +388,18 @@ export const readBoard = (controller, board) => {
         }
     }
 
-    readMessage(speak)
+    return readMessage(speak)
 }
 
-export const readMessage = (mes) => {
+export const readMessage = async (mes) => {
     let utter = new SpeechSynthesisUtterance(mes)
     speechSynthesis.speak(utter)
+    return new Promise(resolve => {
+        utter.onend = resolve;
+    });
 }
 
-export const keyHandler = (event) => {
+export const keyHandler = async (event) => {
     console.log(event.key)
 
     let game = event.data.game
@@ -432,23 +435,23 @@ export const keyHandler = (event) => {
             buySellHandler(event)
         }
     } else if (event.key == 'g' || event.key == 'G') { // G key
-        readBoard('you', game.my_board)
+        await readBoard('you', game.my_board)
     } else if (event.key == 'h' || event.key == 'H') { // H key
 
         if (game.phase == 'Recruit') {
-            readBoard('Buyboard', game.buy_board)
+            await readBoard('Buyboard', game.buy_board)
         } else {
-            readBoard('Opponent', game.opp_board)
+            await readBoard('Opponent', game.opp_board)
         }
 
     } else if (event.key == 'j' || event.key == 'J') { // J key
-        readMessage('your level is: ' + game.level)
+        await readMessage('your level is: ' + game.level)
     } else if (event.key == 'k' || event.key == 'K') { // K key
-        readMessage('You have: ' + game.coins + ' coins')
+        await readMessage('You have: ' + game.coins + ' coins')
     } else if (event.key == 'l' || event.key == 'L') { // L key
-        readMessage('You have: ' + game.health + ' health remaining')
+        await readMessage('You have: ' + game.health + ' health remaining')
     } else if (event.key == 'i' || event.key == 'I') { // I key
-        readMessage('It is currently round:' + game.round)
+        await readMessage('It is currently round:' + game.round)
     }
 }
 
@@ -501,7 +504,7 @@ export const drawMinHealth = (game) => {
     }
 }
 
-export const handleFights = (game) => {
+export const handleFights = async (game) => {
     let result = game.singleAttack();
 
     if (result == undefined) {
@@ -514,9 +517,15 @@ export const handleFights = (game) => {
         return false;
     }
     if (result[0].health <= 0) {
+
+        //await readMessage(`You lost a ${game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)].name}`)
+
         game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)] = undefined;
     }
     if (result[1].health <= 0) {
+
+        //await readMessage(`Your opponent lost a ${game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)].name}`)
+
         game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)] = undefined;
     }
 
@@ -551,7 +560,10 @@ export const roundComplete = async (event) => {
 
     drawMinHealth(game)
 
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1500));
+
+    await readBoard('opponent', game.op_fight_board)
+    await readBoard('you', game.my_fight_board)
 
     var exit = true
 
