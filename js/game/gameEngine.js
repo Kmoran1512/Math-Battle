@@ -1,3 +1,5 @@
+let key_down = false
+
 export default class Game {
     constructor(data, health = 40, round = 1, level = 1, coins = 3, dmg = 0, opp_level = 1, phase="Recruit") {
         this.types = ['Fire', 'Water', 'Grass'];
@@ -264,7 +266,7 @@ export const drawBoard = (loc, arr, empty, classes, index = 1) => {
 }
 
 export const resestDomBoard = (game) => {
-    var healthBar = `<div class="health-bar">|</div>`;
+    var healthBar = `<div class="health-bar">&nbsp;</div>`;
     var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" alt="coin" height="10%" width="100%"/>`;
 
     clearPreviousDom()
@@ -406,11 +408,21 @@ export const readMessage = async (mes) => {
 }
 
 export const keyHandler = async (event) => {
-    console.log(event.key)
-
     let game = event.data.game
 
-    if ((event.key == 'd' || event.key == 'D') && !$('#take-action')[0].disabled) { // D key
+    if (event.key == 'Control' || event.key == 'Alt') {
+        return
+    } else if (!event.ctrlKey || !event.altKey) {
+        return
+    } else if (key_down) {
+        return
+    }
+
+    key_down = true;
+
+    console.log(key_down)
+
+    if ((event.key == 'd' || event.key == 'D')) { // D key
         for (let i = ($('.buyable').length - 1); i >= 0; i--) {
             if ($($('.buyable')[i]).css('border-style') == 'solid') {
                 actionTaken(event);
@@ -458,11 +470,14 @@ export const keyHandler = async (event) => {
         await readMessage('You have: ' + game.health + ' health remaining')
     } else if (event.key == 'i' || event.key == 'I') { // I key
         await readMessage('It is currently round:' + game.round)
-    } else if (event.key == 'b' || event.key == 'B') { // B key
-        await readMessage(`The hot keys are: Tab will move focus over the minions, and a screen reader will read out the minion with focus, Enter will select a focused minion,
-            A refreshes the buyboard, S ends the buy phase or block phase, D buys or sells a selected minion, F levels you up, G reads out your board, 
-            H reads out your opponents board, J reads out your level, K reads out how many coins you have, L reads your health, I reads out the round, and B reads this menu again.`)
+    } else if ((event.key == 'b' || event.key == 'B')) { // B key
+        await readMessage(`The hot keys are: Tab will move focus over the minions, and a screen reader will read out the minion with focus Then use the ctrl and alt keys plus 
+            the following keys for the desired result. "Enter" will select a focused minion, "A" refreshes the buyboard, "S" ends the buy phase or block phase, "D" buys or sells a 
+            selected minion, "F" levels you up, "G" reads out your board, "H" reads out your opponents board, "J" reads out your level, "K" reads out how many coins you have, "L" 
+            reads your health, "I" reads out the round, and "B" reads this menu again.`)
     }
+
+    key_down = false;
 }
 
 export const actionTaken = (event) => {
@@ -679,7 +694,7 @@ export const loadElementsintoDOM = (game) => {
         $(document).on('click', '#round-comp', {game: game}, roundComplete);
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
         $(document).on('click', '#canvas', leaveNow);
-        $(document).on('keypress', {game: game}, keyHandler)
+        $(document).on('keydown', {game: game}, keyHandler)
     }
 }
 
