@@ -30,10 +30,10 @@
             var errorCode = error.code;
             var errorMessage = error.message;
 
-            window.alert("Error: " + errorMessage);
-
             let utter = new SpeechSynthesisUtterance(errorMessage);
             speechSynthesis.speak(utter);
+            
+            //window.alert("Error: " + errorMessage);
         });
 
     };
