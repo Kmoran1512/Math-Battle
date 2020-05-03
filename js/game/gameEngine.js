@@ -1,3 +1,5 @@
+let key_down = 0
+
 export default class Game {
     constructor(data, health = 40, round = 1, level = 1, coins = 3, dmg = 0, opp_level = 1, phase="Recruit") {
         this.types = ['Fire', 'Water', 'Grass'];
@@ -264,7 +266,7 @@ export const drawBoard = (loc, arr, empty, classes, index = 1) => {
 }
 
 export const resestDomBoard = (game) => {
-    var healthBar = `<div class="health-bar">|</div>`;
+    var healthBar = `<div class="health-bar">&nbsp;</div>`;
     var coin = `<img class="coin-img" src="../static/images/other/Coin_website.png" alt="coin" height="10%" width="100%"/>`;
 
     clearPreviousDom()
@@ -306,18 +308,29 @@ export const resestDomBoard = (game) => {
 
 }
 
-export const refreshRecruit = (event) => {
+export const refreshRecruit = async (event) => {
     var game = event.data.game;
 
-    game.refreshButton();
-    resestDomBoard(game);
+    if (game.coins < 1) {
+        await readMessage(`you have no coins, you need 1 to refresh the buyboard`)
+    } else {
+        await readMessage(`buyboard refreshed`)
+        game.refreshButton();
+        resestDomBoard(game)
+    }
 }
 
-export const levelUpHandler = (event) => {
+export const levelUpHandler = async (event) => {
     var game = event.data.game
 
-    game.levelUp()
-    resestDomBoard(game)
+    if (game.coins < 4) {
+        await readMessage(`you have ${game.coins} coins, you need 4 to level up`)
+    } else {
+        game.levelUp()
+        resestDomBoard(game)
+        await readMessage(`you leveled up to level ${game.level}`)
+    }
+    
 }
 
 export const clearBorders = (exclude = null) => {
@@ -374,6 +387,8 @@ export const readBoard = async (controller, board) => {
 
     let new_board = boardOrder(board, undefined)
 
+
+
     let first = true
     for (let i = 0; i < new_board.length; i++) {
         if (new_board[i] != undefined) {
@@ -388,6 +403,10 @@ export const readBoard = async (controller, board) => {
         }
     }
 
+    if (speak.split(' ').length <= 4) {
+        speak += 'nothing.'
+    }
+
     return readMessage(speak)
 }
 
@@ -400,21 +419,34 @@ export const readMessage = async (mes) => {
 }
 
 export const keyHandler = async (event) => {
-    console.log(event.key)
-
     let game = event.data.game
 
-    if ((event.key == 'd' || event.key == 'D') && !$('#take-action')[0].disabled) { // D key
-        for (let i = ($('.buyable').length - 1); i >= 0; i--) {
-            if ($($('.buyable')[i]).css('border-style') == 'solid') {
-                actionTaken(event);
+    if (event.key == 'Control' || event.key == 'Alt') {
+        return
+    } else if (!event.ctrlKey || !event.altKey) {
+        return
+    } else if (key_down != 0) {
+        return
+    }
+
+    key_down = 1;
+
+    console.log(key_down)
+
+    if ((event.key == 'd' || event.key == 'D')) { // D key
+        let breaker = false;
+        for (let i = ($('.card-img').length - 1); i >= 0; i--) {
+            if ($($('.card-img')[i]).css('border-style') != 'none') {
+                breaker = true;
             }
         }
-        for (let i = ($('.sellable').length - 1); i >= 0; i--) {
-            if ($($('.sellable')[i]).css('border-style') == 'solid') {
-                actionTaken(event);
-            }
+
+        if (breaker) {
+            await actionTaken(event);
+        } else {
+            await readMessage(`No action taken, no minions are selected`)
         }
+
     } else if (event.key == 's' || event.key == 'S') { // S key
         if ($('#round-comp').length >= 1) {
             roundComplete(event);
@@ -423,10 +455,10 @@ export const keyHandler = async (event) => {
         } else if ($('#def-comp').length >= 1) {
             blockComplete(event);
         }
-    } else if ((event.key == 'a' || event.key == 'A') && !$('#refresh-recruit')[0].disabled) { // A key
-        refreshRecruit(event);
+    } else if ((event.key == 'a' || event.key == 'A')) { // A key
+        await refreshRecruit(event);
     } else if (event.key == 'f' || event.key == 'F') { // F key
-        levelUpHandler(event);
+        await levelUpHandler(event);
     } else if (event.key == 'Enter') { // Enter key
         if (!$('#canvas')[0].disabled) {
             leaveNow(event);
@@ -452,20 +484,29 @@ export const keyHandler = async (event) => {
         await readMessage('You have: ' + game.health + ' health remaining')
     } else if (event.key == 'i' || event.key == 'I') { // I key
         await readMessage('It is currently round:' + game.round)
+    } else if ((event.key == 'b' || event.key == 'B')) { // B key
+        await readMessage(`The hot keys are: Tab will move focus over the minions, and a screen reader will read out the minion with focus Then use the ctrl and alt keys plus 
+            the following keys for the desired result. "Enter" will select a focused minion, "A" refreshes the buyboard, "S" ends the buy phase or block phase, "D" buys or sells a 
+            selected minion, "F" levels you up, "G" reads out your board, "H" reads out your opponents board, "J" reads out your level, "K" reads out how many coins you have, "L" 
+            reads your health, "I" reads out the round, and "B" reads this menu again.`)
     }
+    
+    key_down = 2;
 }
 
-export const actionTaken = (event) => {
+export const actionTaken = async (event) => {
     var game = event.data.game;
 
     for (let i = ($('.buyable').length - 1); i >= 0; i--) {
         if ($($('.buyable')[i]).css('border-style') == 'solid') {
+            await readMessage(`Minion purchased`)
             $('audio#buy-sound')[0].play()
             game.purchase($('.buyable')[i].alt.replace('buyable ', '').split(":")[0]);
         }
     }
     for (let i = ($('.sellable').length - 1); i >= 0; i--) {
         if ($($('.sellable')[i]).css('border-style') == 'solid') {
+            await readMessage(`Minion sold`)
             $('audio#sold-sound')[0].play()
             game.sellMinion($('.sellable')[i].alt.replace('sellable ', '').split(":")[0]);
         }
@@ -518,13 +559,9 @@ export const handleFights = (game) => {
     }
     if (result[0].health <= 0) {
 
-        //await readMessage(`You lost a ${game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)].name}`)
-
         game.my_fight_board[game.getLargestMinionMod2(game.my_fight_board)] = undefined;
     }
     if (result[1].health <= 0) {
-
-        //await readMessage(`Your opponent lost a ${game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)].name}`)
 
         game.op_fight_board[game.getLargestMinionMod2(game.op_fight_board)] = undefined;
     }
@@ -562,13 +599,12 @@ export const roundComplete = async (event) => {
 
     await new Promise(r => setTimeout(r, 1500));
 
-    await readBoard('opponent', game.op_fight_board)
-    await readBoard('you', game.my_fight_board)
 
     var exit = true
 
     while (exit) {
-        await new Promise(r => setTimeout(r, 1000));
+        await readBoard('opponent', game.op_fight_board)
+        await readBoard('you', game.my_fight_board)    
         exit = handleFights(game)
         console.log(exit)
     }
@@ -674,7 +710,12 @@ export const loadElementsintoDOM = (game) => {
         $(document).on('click', '#round-comp', {game: game}, roundComplete);
         $(document).on('click', '#def-comp', {game: game}, blockComplete);
         $(document).on('click', '#canvas', leaveNow);
-        $(document).on('keypress', {game: game}, keyHandler)
+        $(document).on('keydown', {game: game}, keyHandler)
+        $(document).on('keyup', {game: game}, function() {
+            if (key_down == 2) {
+                key_down = 0;
+            }
+        });
     }
 }
 

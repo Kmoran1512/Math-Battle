@@ -20,6 +20,8 @@
 //Submit Register Button Logic
 {
     var register = (event) => {
+        event.preventDefault()
+
         var userEmail = $('#txt-register-email')[0].value;
         var userPass = $('#txt-register-pass')[0].value;
 
@@ -28,7 +30,10 @@
             var errorCode = error.code;
             var errorMessage = error.message;
 
-            window.alert("Error: " + errorMessage)
+            window.alert("Error: " + errorMessage);
+
+            let utter = new SpeechSynthesisUtterance(errorMessage);
+            speechSynthesis.speak(utter);
         });
 
     };
