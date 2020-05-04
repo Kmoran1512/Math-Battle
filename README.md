@@ -52,15 +52,15 @@ Link to the Pages: https://kmoran1512.github.io/Math-Battle/
 ## Hot-Keys
 
   For users who might struggle use a mouse there are also hot-keys. As you may have noticed all of these with the exception of the "tab" key to highlight minions (you can also use "shift" and "tab" to go in the reverse direction as "tab") begin by pressing and holding the ctrl and alt keys then pressing an additional key:
-    * Enter Key: Selects the minion that has been highlighted by the tab key.
-    * A. Key: During the Recruit phase this hot-key will refresh the buy-board.
-    * S. Key: Progresses to the next phase, this can be used during the Recruit phase after you are done buying and selling minions and refreshing the buy-board, and this can be used in the Block phase after you have selected a sheild.
-    * D. Key: During the Recruit phase when a minion is selected either by using the Enter hot-key or by using a mouse this hot-key will either sell or buy a minions depending on if you control it or if it is in the buy-board.
-    * F. Key: During the Recruit phase if you have four coins pressing this hot-key will level you up then read out your new level.
-    * G. Key: During the Recruit phase this hot-key will read out what minions you have on your board.
-    * H. Key: During the Recruit or Block phase this hot-key will read out what minions your opponent has on their board.
-    * I. Key: During the Recruit or Block phase this hot-key will read out what round number you are currently on.
-    * J. Key: During the Recruit or Block phase this hot-key will read out what level you are currently on.
-    * K. Key: During the Recruit or Block phase this hot-key will read out how many coins you currently have.
-    * L. Key: During the Recruit or Block phase this hot-key will read out how much health remaining you currently have.
-    * B. Key: If at anytime in the game you need help remembering these hot-keys using ctrl + alt + the B key will read out what each one is and what they do to help you remember.
+    + Enter Key: Selects the minion that has been highlighted by the tab key.
+    + A. Key: During the Recruit phase this hot-key will refresh the buy-board.
+    + S. Key: Progresses to the next phase, this can be used during the Recruit phase after you are done buying and selling minions and refreshing the buy-board, and this can be used in the Block phase after you have selected a sheild.
+    + D. Key: During the Recruit phase when a minion is selected either by using the Enter hot-key or by using a mouse this hot-key will either sell or buy a minions depending on if you control it or if it is in the buy-board.
+    + F. Key: During the Recruit phase if you have four coins pressing this hot-key will level you up then read out your new level.
+    + G. Key: During the Recruit phase this hot-key will read out what minions you have on your board.
+    + H. Key: During the Recruit or Block phase this hot-key will read out what minions your opponent has on their board.
+    + I. Key: During the Recruit or Block phase this hot-key will read out what round number you are currently on.
+    + J. Key: During the Recruit or Block phase this hot-key will read out what level you are currently on.
+    + K. Key: During the Recruit or Block phase this hot-key will read out how many coins you currently have.
+    + L. Key: During the Recruit or Block phase this hot-key will read out how much health remaining you currently have.
+    + B. Key: If at anytime in the game you need help remembering these hot-keys using ctrl + alt + the B key will read out what each one is and what they do to help you remember.
